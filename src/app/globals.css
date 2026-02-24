@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #1C1C2E;
+  --background: #0A0A0A;
   --foreground: #F5F0EB;
-  --accent: #E8773A;
-  --accent-hover: #D4622B;
-  --surface: #252538;
-  --surface-elevated: #2E2E45;
-  --text-secondary: #9B95A3;
-  --text-muted: #5C5868;
+  --accent: #FFD60A;
+  --accent-hover: #E6BF00;
+  --surface: #141414;
+  --surface-elevated: #1E1E1E;
+  --text-secondary: #A0A0A0;
+  --text-muted: #555555;
   --success: #5BA867;
-  --streak: #E8B73A;
+  --streak: #FFD60A;
 }
 
 @theme inline {
@@ -26,6 +26,7 @@
   --color-streak: var(--streak);
   --font-sans: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: "Impact", "Haettenschweiler", "Arial Narrow Bold", "Arial Black", sans-serif;
+  --color-accent-text: #000000;
 }
 
 body {

@@ -121,12 +121,8 @@ function AppContent() {
                           : 'bg-surface-elevated'
                       }`}
                     >
-                      <span
-                        className={`text-xs font-bold ${
-                          entry.isYes ? 'text-success' : 'text-accent'
-                        }`}
-                      >
-                        {entry.isYes ? 'YES' : 'NO'}
+                      <span className="text-base">
+                        {entry.isYes ? '\u{1F44D}' : '\u{1F44E}'}
                       </span>
                       <span className="text-foreground text-sm font-medium truncate flex-1">
                         {entry.ask}
@@ -183,7 +179,7 @@ function AppContent() {
           <motion.button
             whileTap={{ scale: 0.93 }}
             onClick={() => setShowLog(true)}
-            className="w-14 h-14 rounded-2xl bg-accent text-white font-bold text-xl
+            className="w-14 h-14 rounded-2xl bg-accent text-accent-text font-bold text-xl
               shadow-lg shadow-accent/30 flex items-center justify-center
               hover:bg-accent-hover transition-colors"
             aria-label="Log a rejection"

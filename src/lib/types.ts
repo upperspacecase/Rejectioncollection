@@ -1,27 +1,6 @@
-export type RejectionCategory =
-  | 'pitch'
-  | 'ask'
-  | 'application'
-  | 'creative'
-  | 'personal'
-  | 'sales'
-  | 'other';
-
-export const CATEGORY_LABELS: Record<RejectionCategory, string> = {
-  pitch: 'Pitch',
-  ask: 'Ask',
-  application: 'Application',
-  creative: 'Creative',
-  personal: 'Personal',
-  sales: 'Sales',
-  other: 'Other',
-};
-
 export interface Rejection {
   id: string;
-  category: RejectionCategory;
   ask: string;
-  outcome: string;
   useful: boolean;
   timestamp: number;
   isYes: boolean; // false = rejection, true = success (attempt that worked)
@@ -30,7 +9,6 @@ export interface Rejection {
 export interface UserProfile {
   onboardingComplete: boolean;
   name: string;
-  categories: RejectionCategory[];
   yearlyGoal: number;
   joinDate: number;
 }

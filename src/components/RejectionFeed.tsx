@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/lib/store';
-import { CATEGORY_LABELS, RejectionCategory, Rejection } from '@/lib/types';
+import { Rejection } from '@/lib/types';
 import { formatRelativeTime } from '@/lib/utils';
 
 type Filter = 'all' | 'rejections' | 'yeses' | 'useful';
@@ -11,17 +11,12 @@ type Filter = 'all' | 'rejections' | 'yeses' | 'useful';
 export default function RejectionFeed() {
   const { state, toggleUseful, deleteEntry } = useStore();
   const [filter, setFilter] = useState<Filter>('all');
-  const [categoryFilter, setCategoryFilter] = useState<RejectionCategory | 'all'>('all');
 
   let filtered = state.entries;
 
   if (filter === 'rejections') filtered = filtered.filter((e) => !e.isYes);
   else if (filter === 'yeses') filtered = filtered.filter((e) => e.isYes);
   else if (filter === 'useful') filtered = filtered.filter((e) => e.useful);
-
-  if (categoryFilter !== 'all') {
-    filtered = filtered.filter((e) => e.category === categoryFilter);
-  }
 
   return (
     <div className="flex flex-col h-full">
@@ -33,28 +28,13 @@ export default function RejectionFeed() {
             onClick={() => setFilter(f)}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-150 ${
               filter === f
-                ? 'bg-accent text-white'
+                ? 'bg-accent text-accent-text'
                 : 'bg-surface-elevated text-secondary hover:text-foreground'
             }`}
           >
             {f === 'all' ? 'All' : f === 'rejections' ? 'Nos' : f === 'yeses' ? 'Yeses' : 'Useful'}
           </button>
         ))}
-        <div className="w-px bg-muted/20 mx-1 self-stretch" />
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value as RejectionCategory | 'all')}
-          className="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider
-            bg-surface-elevated text-secondary appearance-none cursor-pointer
-            hover:text-foreground transition-colors"
-        >
-          <option value="all">All types</option>
-          {state.profile.categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {CATEGORY_LABELS[cat]}
-            </option>
-          ))}
-        </select>
       </div>
 
       {/* Feed */}
@@ -115,15 +95,8 @@ function FeedItem({
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <span
-              className={`text-xs font-bold uppercase tracking-wider ${
-                entry.isYes ? 'text-success' : 'text-accent'
-              }`}
-            >
-              {entry.isYes ? 'YES' : 'NO'}
-            </span>
-            <span className="text-muted text-xs">
-              {CATEGORY_LABELS[entry.category]}
+            <span className="text-base">
+              {entry.isYes ? '\u{1F44D}' : '\u{1F44E}'}
             </span>
             {entry.useful && (
               <span className="text-accent text-xs font-medium">
@@ -134,11 +107,6 @@ function FeedItem({
           <p className="text-foreground text-sm font-medium truncate">
             {entry.ask}
           </p>
-          {entry.outcome && (
-            <p className="text-secondary text-xs mt-0.5 truncate">
-              {entry.outcome}
-            </p>
-          )}
         </div>
         <span className="text-muted text-xs whitespace-nowrap mt-0.5">
           {formatRelativeTime(entry.timestamp)}

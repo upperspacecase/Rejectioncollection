@@ -74,7 +74,7 @@ export default function MilestoneModal({ milestone, onClose }: MilestoneModalPro
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
           onClick={onClose}
-          className="px-6 py-2.5 rounded-xl bg-accent text-white font-bold text-sm
+          className="px-6 py-2.5 rounded-xl bg-accent text-accent-text font-bold text-sm
             hover:bg-accent-hover active:scale-[0.97] transition-all duration-150"
         >
           Keep going

@@ -8,7 +8,7 @@ import React, {
   useCallback,
   ReactNode,
 } from 'react';
-import { AppState, Rejection, RejectionCategory, UserProfile } from './types';
+import { AppState, Rejection, UserProfile } from './types';
 import { generateId } from './utils';
 
 const STORAGE_KEY = 'rejection-collection-data';
@@ -16,7 +16,6 @@ const STORAGE_KEY = 'rejection-collection-data';
 const defaultProfile: UserProfile = {
   onboardingComplete: false,
   name: '',
-  categories: ['pitch', 'ask', 'application', 'creative', 'personal'],
   yearlyGoal: 1000,
   joinDate: Date.now(),
 };
@@ -31,16 +30,13 @@ type Action =
   | {
       type: 'LOG_ENTRY';
       payload: {
-        category: RejectionCategory;
         ask: string;
-        outcome: string;
-        useful: boolean;
         isYes: boolean;
       };
     }
   | { type: 'TOGGLE_USEFUL'; payload: string }
   | { type: 'DELETE_ENTRY'; payload: string }
-  | { type: 'COMPLETE_ONBOARDING'; payload: { name: string; categories: RejectionCategory[] } }
+  | { type: 'COMPLETE_ONBOARDING'; payload: { name: string } }
   | { type: 'UPDATE_GOAL'; payload: number };
 
 function reducer(state: AppState, action: Action): AppState {
@@ -51,10 +47,8 @@ function reducer(state: AppState, action: Action): AppState {
     case 'LOG_ENTRY': {
       const entry: Rejection = {
         id: generateId(),
-        category: action.payload.category,
         ask: action.payload.ask,
-        outcome: action.payload.outcome,
-        useful: action.payload.useful,
+        useful: false,
         isYes: action.payload.isYes,
         timestamp: Date.now(),
       };
@@ -82,7 +76,6 @@ function reducer(state: AppState, action: Action): AppState {
           ...state.profile,
           onboardingComplete: true,
           name: action.payload.name,
-          categories: action.payload.categories,
           joinDate: Date.now(),
         },
       };
@@ -101,16 +94,10 @@ function reducer(state: AppState, action: Action): AppState {
 interface StoreContextValue {
   state: AppState;
   dispatch: React.Dispatch<Action>;
-  logEntry: (entry: {
-    category: RejectionCategory;
-    ask: string;
-    outcome: string;
-    useful: boolean;
-    isYes: boolean;
-  }) => void;
+  logEntry: (entry: { ask: string; isYes: boolean }) => void;
   toggleUseful: (id: string) => void;
   deleteEntry: (id: string) => void;
-  completeOnboarding: (name: string, categories: RejectionCategory[]) => void;
+  completeOnboarding: (name: string) => void;
   isLoaded: boolean;
 }
 
@@ -120,7 +107,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, defaultState);
   const [isLoaded, setIsLoaded] = React.useState(false);
 
-  // Load from localStorage on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -134,7 +120,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setIsLoaded(true);
   }, []);
 
-  // Persist to localStorage on state change
   useEffect(() => {
     if (isLoaded) {
       try {
@@ -146,13 +131,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [state, isLoaded]);
 
   const logEntry = useCallback(
-    (entry: {
-      category: RejectionCategory;
-      ask: string;
-      outcome: string;
-      useful: boolean;
-      isYes: boolean;
-    }) => {
+    (entry: { ask: string; isYes: boolean }) => {
       dispatch({ type: 'LOG_ENTRY', payload: entry });
     },
     []
@@ -167,8 +146,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const completeOnboarding = useCallback(
-    (name: string, categories: RejectionCategory[]) => {
-      dispatch({ type: 'COMPLETE_ONBOARDING', payload: { name, categories } });
+    (name: string) => {
+      dispatch({ type: 'COMPLETE_ONBOARDING', payload: { name } });
     },
     []
   );
