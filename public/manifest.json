@@ -1,0 +1,10 @@
+{
+  "name": "Rejection Collection",
+  "short_name": "Rejections",
+  "description": "Turn every 'no' into proof you tried.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1C1C2E",
+  "theme_color": "#1C1C2E",
+  "icons": []
+}

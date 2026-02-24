@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --background: #1C1C2E;
+  --foreground: #F5F0EB;
+  --accent: #E8773A;
+  --accent-hover: #D4622B;
+  --surface: #252538;
+  --surface-elevated: #2E2E45;
+  --text-secondary: #9B95A3;
+  --text-muted: #5C5868;
+  --success: #5BA867;
+  --streak: #E8B73A;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-success: var(--success);
+  --color-streak: var(--streak);
+  --font-sans: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Impact", "Haettenschweiler", "Arial Narrow Bold", "Arial Black", sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
+}
+
+/* Noise texture overlay for tactile matte paper feel */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Scrollbar styling */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 999px;
+}
+
+/* Input resets */
+input, select, textarea {
+  font-family: inherit;
+}
+
+/* Safe area padding for mobile */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
