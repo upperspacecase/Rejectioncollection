@@ -33,8 +33,8 @@ export default function LogConfirmation({ isRejection, onDone }: LogConfirmation
         <motion.div
           initial={{ y: 20 }}
           animate={{ y: 0 }}
-          className="font-display font-black text-accent leading-none mb-2"
-          style={{ fontSize: 'clamp(2rem, 10vw, 4rem)' }}
+          className="font-serif font-light text-accent leading-none mb-2 lowercase"
+          style={{ fontSize: 'clamp(2.5rem, 10vw, 4.5rem)' }}
         >
           {isRejection ? 'Logged.' : 'Nice.'}
         </motion.div>
@@ -42,7 +42,7 @@ export default function LogConfirmation({ isRejection, onDone }: LogConfirmation
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-secondary text-sm"
+          className="text-secondary text-[10px] font-mono uppercase tracking-[0.2em]"
         >
           {isRejection ? 'That counted. Go again.' : 'A yes. Keep the volume up.'}
         </motion.p>

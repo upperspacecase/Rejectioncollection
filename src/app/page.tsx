@@ -6,6 +6,8 @@ import { StoreProvider, useStore } from '@/lib/store';
 import { getRejections } from '@/lib/utils';
 import { getNewMilestone } from '@/lib/milestones';
 import { MilestoneDef } from '@/lib/types';
+import { AuthProvider, useAuth } from '@/lib/auth';
+import AuthScreen from '@/components/AuthScreen';
 import CountDisplay from '@/components/CountDisplay';
 import StatsBar from '@/components/StatsBar';
 import QuickLog from '@/components/QuickLog';
@@ -58,7 +60,7 @@ function AppContent() {
   if (!isLoaded) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+        <div className="w-4 h-4 border border-accent border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -81,7 +83,7 @@ function AppContent() {
               transition={{ duration: 0.15 }}
               className="h-full flex flex-col px-5 pt-12 pb-4 overflow-y-auto"
             >
-              {/* Count — the hook */}
+              {/* Count */}
               <div className="flex-shrink-0 mb-8">
                 <CountDisplay count={rejectionCount} />
               </div>
@@ -94,13 +96,13 @@ function AppContent() {
               {/* Recent rejections preview */}
               <div className="flex-1 min-h-0">
                 <div className="flex items-baseline justify-between mb-3">
-                  <h3 className="text-secondary text-xs font-bold uppercase tracking-wider">
+                  <h3 className="text-secondary text-[10px] font-mono uppercase tracking-[0.2em]">
                     Recent
                   </h3>
                   {state.entries.length > 3 && (
                     <button
                       onClick={() => setActiveTab('feed')}
-                      className="text-accent text-xs font-medium hover:underline"
+                      className="text-accent text-[10px] font-mono uppercase tracking-wider hover:text-foreground transition-colors cursor-pointer"
                     >
                       See all
                     </button>
@@ -108,27 +110,27 @@ function AppContent() {
                 </div>
                 <div className="space-y-1.5 pb-4">
                   {state.entries.length === 0 && (
-                    <p className="text-muted text-sm text-center py-8">
+                    <p className="text-muted font-serif font-light italic text-base text-center py-8">
                       Your first rejection is out there. Go find it.
                     </p>
                   )}
                   {state.entries.slice(0, 5).map((entry) => (
                     <div
                       key={entry.id}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl ${
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg ${
                         entry.useful
-                          ? 'bg-accent/10 border border-accent/15'
-                          : 'bg-surface-elevated'
+                          ? 'border border-accent/20 bg-accent/5'
+                          : 'border border-border-light'
                       }`}
                     >
-                      <span className="text-base">
-                        {entry.isYes ? '\u{1F44D}' : '\u{1F44E}'}
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-secondary">
+                        {entry.isYes ? 'YES' : 'NO'}
                       </span>
-                      <span className="text-foreground text-sm font-medium truncate flex-1">
+                      <span className="text-foreground font-serif font-light text-base truncate flex-1">
                         {entry.ask}
                       </span>
                       {entry.useful && (
-                        <span className="text-accent text-[10px] font-bold uppercase">
+                        <span className="text-accent text-[10px] font-mono uppercase tracking-wider">
                           Useful
                         </span>
                       )}
@@ -148,8 +150,8 @@ function AppContent() {
               transition={{ duration: 0.15 }}
               className="h-full flex flex-col px-5 pt-12 pb-4"
             >
-              <h1 className="text-foreground font-bold text-lg mb-4 flex-shrink-0">
-                Your Log
+              <h1 className="text-foreground font-serif font-light text-2xl mb-4 flex-shrink-0 lowercase">
+                your log
               </h1>
               <div className="flex-1 min-h-0 overflow-hidden">
                 <RejectionFeed />
@@ -173,18 +175,18 @@ function AppContent() {
       </div>
 
       {/* Bottom bar: Log button + nav */}
-      <div className="flex-shrink-0 border-t border-surface-elevated safe-bottom">
+      <div className="flex-shrink-0 border-t border-border-light safe-bottom">
         {/* Log button */}
         <div className="flex justify-center -mt-6 mb-2">
           <motion.button
             whileTap={{ scale: 0.93 }}
             onClick={() => setShowLog(true)}
-            className="w-14 h-14 rounded-2xl bg-accent text-accent-text font-bold text-xl
-              shadow-lg shadow-accent/30 flex items-center justify-center
-              hover:bg-accent-hover transition-colors"
+            className="w-14 h-14 rounded-lg border border-border-active bg-background text-foreground font-mono text-xl
+              flex items-center justify-center cursor-pointer
+              hover:border-foreground/50 transition-colors"
             aria-label="Log a rejection"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
@@ -197,52 +199,22 @@ function AppContent() {
             label="Home"
             active={activeTab === 'home'}
             onClick={() => setActiveTab('home')}
-            icon={
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
-            }
           />
           <TabButton
             label="Log"
             active={activeTab === 'feed'}
             onClick={() => setActiveTab('feed')}
-            icon={
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="8" y1="6" x2="21" y2="6" />
-                <line x1="8" y1="12" x2="21" y2="12" />
-                <line x1="8" y1="18" x2="21" y2="18" />
-                <line x1="3" y1="6" x2="3.01" y2="6" />
-                <line x1="3" y1="12" x2="3.01" y2="12" />
-                <line x1="3" y1="18" x2="3.01" y2="18" />
-              </svg>
-            }
           />
           <div className="w-14" /> {/* Spacer for center button */}
           <TabButton
             label="Board"
             active={activeTab === 'board'}
             onClick={() => setActiveTab('board')}
-            icon={
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 20V10" />
-                <path d="M18 20V4" />
-                <path d="M6 20v-4" />
-              </svg>
-            }
           />
           <TabButton
             label="More"
             active={false}
             onClick={() => {}}
-            icon={
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <circle cx="12" cy="12" r="1" />
-                <circle cx="19" cy="12" r="1" />
-                <circle cx="5" cy="12" r="1" />
-              </svg>
-            }
           />
         </nav>
       </div>
@@ -282,30 +254,49 @@ function TabButton({
   label,
   active,
   onClick,
-  icon,
 }: {
   label: string;
   active: boolean;
   onClick: () => void;
-  icon: React.ReactNode;
 }) {
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center gap-0.5 px-3 py-1 transition-colors duration-150 ${
-        active ? 'text-accent' : 'text-muted hover:text-secondary'
+      className={`flex flex-col items-center gap-0.5 px-3 py-1 min-h-[44px] min-w-[44px] justify-center transition-colors duration-200 cursor-pointer ${
+        active ? 'text-foreground' : 'text-muted hover:text-secondary'
       }`}
     >
-      {icon}
-      <span className="text-[10px] font-medium">{label}</span>
+      <span className="text-[10px] font-mono uppercase tracking-[0.15em]">{label}</span>
     </button>
+  );
+}
+
+function AuthGate() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="w-4 h-4 border border-accent border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <AuthScreen />;
+  }
+
+  return (
+    <StoreProvider>
+      <AppContent />
+    </StoreProvider>
   );
 }
 
 export default function Home() {
   return (
-    <StoreProvider>
-      <AppContent />
-    </StoreProvider>
+    <AuthProvider>
+      <AuthGate />
+    </AuthProvider>
   );
 }

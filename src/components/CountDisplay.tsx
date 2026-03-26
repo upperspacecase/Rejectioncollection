@@ -10,7 +10,7 @@ interface CountDisplayProps {
 
 function Digit({ value, index }: { value: string; index: number }) {
   return (
-    <div className="relative inline-block overflow-hidden h-[1em]" style={{ width: value === ',' ? '0.35em' : '0.65em' }}>
+    <div className="relative inline-block overflow-hidden h-[1em]" style={{ width: value === ',' ? '0.3em' : '0.6em' }}>
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span
           key={value + '-' + index}
@@ -49,7 +49,7 @@ export default function CountDisplay({ count, label }: CountDisplayProps) {
   return (
     <div className="flex flex-col items-center select-none">
       <div
-        className="font-display font-black tracking-tight leading-none text-foreground"
+        className="font-serif font-light tracking-tight leading-none text-foreground"
         style={{ fontSize: 'clamp(5rem, 20vw, 10rem)' }}
         aria-label={`${count} rejections`}
       >
@@ -57,7 +57,7 @@ export default function CountDisplay({ count, label }: CountDisplayProps) {
           <Digit key={i} value={d} index={i} />
         ))}
       </div>
-      <p className="mt-2 text-secondary text-sm tracking-widest uppercase font-medium">
+      <p className="mt-3 text-secondary text-[10px] tracking-[0.2em] uppercase font-mono font-light">
         {label || 'times you didn\u2019t play it safe'}
       </p>
     </div>

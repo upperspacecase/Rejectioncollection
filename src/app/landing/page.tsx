@@ -134,8 +134,6 @@ export default function LandingPage() {
       />
 
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@100;300;400&display=swap');
-
         .landing-root {
           --font-serif: 'Cormorant Garamond', serif;
           --font-mono: 'JetBrains Mono', monospace;
@@ -416,10 +414,28 @@ export default function LandingPage() {
           color: var(--text-tertiary);
         }
 
+        .l-nav a,
+        .btn-tune {
+          min-height: 44px;
+          display: inline-flex;
+          align-items: center;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .pulse-dot {
+            animation: none;
+          }
+        }
+
         @media (max-width: 768px) {
+          .ui-layer {
+            padding: 20px;
+            padding-top: max(20px, env(safe-area-inset-top));
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
+          }
           .l-footer {
             grid-template-columns: 1fr;
-            gap: 32px;
+            gap: 24px;
             text-align: center;
           }
           .stat-list {
@@ -436,6 +452,17 @@ export default function LandingPage() {
           }
           .l-nav {
             justify-content: center;
+            gap: 24px;
+          }
+          .session-wrapper {
+            gap: 24px;
+          }
+          .btn-tune {
+            margin-top: 40px;
+            padding: 16px 32px;
+          }
+          .track-title {
+            font-size: clamp(2rem, 8vw, 3.5rem);
           }
         }
       `}</style>

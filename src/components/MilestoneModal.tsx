@@ -29,8 +29,8 @@ export default function MilestoneModal({ milestone, onClose }: MilestoneModalPro
           damping: 22,
           delay: 0.1,
         }}
-        className="relative bg-surface rounded-2xl p-8 max-w-sm w-full text-center z-10
-          border border-accent/20 shadow-2xl shadow-accent/10"
+        className="relative bg-surface rounded-lg p-8 max-w-sm w-full text-center z-10
+          border border-accent/20"
       >
         {/* Milestone count */}
         <motion.div
@@ -42,7 +42,7 @@ export default function MilestoneModal({ milestone, onClose }: MilestoneModalPro
             damping: 15,
             delay: 0.3,
           }}
-          className="font-display font-black text-accent leading-none mb-3"
+          className="font-serif font-light text-accent leading-none mb-4"
           style={{ fontSize: 'clamp(3rem, 12vw, 5rem)' }}
         >
           {milestone.count.toLocaleString()}
@@ -53,7 +53,7 @@ export default function MilestoneModal({ milestone, onClose }: MilestoneModalPro
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45 }}
-          className="text-foreground font-bold text-xl mb-3 uppercase tracking-wider"
+          className="text-foreground font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
         >
           {milestone.title}
         </motion.h2>
@@ -63,7 +63,7 @@ export default function MilestoneModal({ milestone, onClose }: MilestoneModalPro
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55 }}
-          className="text-secondary text-sm leading-relaxed mb-6"
+          className="text-secondary font-serif font-light text-base italic leading-relaxed mb-8"
         >
           {milestone.message}
         </motion.p>
@@ -74,8 +74,8 @@ export default function MilestoneModal({ milestone, onClose }: MilestoneModalPro
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
           onClick={onClose}
-          className="px-6 py-2.5 rounded-xl bg-accent text-accent-text font-bold text-sm
-            hover:bg-accent-hover active:scale-[0.97] transition-all duration-150"
+          className="px-6 py-2.5 rounded-lg border border-border-light text-foreground font-mono text-[11px] uppercase tracking-[0.15em]
+            hover:border-border-active active:scale-[0.97] transition-all duration-200 cursor-pointer"
         >
           Keep going
         </motion.button>

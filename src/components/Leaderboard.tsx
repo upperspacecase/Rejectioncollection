@@ -16,9 +16,9 @@ export default function Leaderboard() {
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-baseline justify-between mb-4">
-        <h2 className="text-foreground font-bold text-lg">The Board</h2>
+        <h2 className="text-foreground font-serif font-light text-2xl">The Board</h2>
         {userEntry && (
-          <span className="text-secondary text-xs">
+          <span className="text-secondary text-[10px] font-mono uppercase tracking-widest">
             You&apos;re #{userEntry.rank}
           </span>
         )}
@@ -31,15 +31,15 @@ export default function Leaderboard() {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.03, duration: 0.2 }}
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
               entry.isCurrentUser
-                ? 'bg-accent/15 border border-accent/25'
-                : 'hover:bg-surface-elevated'
+                ? 'border border-accent/20 bg-accent/5'
+                : 'border border-transparent hover:border-border-light'
             }`}
           >
             {/* Rank */}
             <span
-              className={`w-8 text-right font-bold text-sm ${
+              className={`w-8 text-right font-mono text-xs ${
                 entry.rank <= 3
                   ? 'text-accent'
                   : entry.isCurrentUser
@@ -47,12 +47,12 @@ export default function Leaderboard() {
                   : 'text-muted'
               }`}
             >
-              {entry.rank}
+              {String(entry.rank).padStart(2, '0')}
             </span>
 
             {/* Name */}
             <span
-              className={`flex-1 font-medium text-sm truncate ${
+              className={`flex-1 font-serif font-light text-base truncate ${
                 entry.isCurrentUser ? 'text-foreground' : 'text-secondary'
               }`}
             >
@@ -61,15 +61,14 @@ export default function Leaderboard() {
 
             {/* Streak */}
             {entry.streak > 0 && (
-              <span className="text-streak text-xs flex items-center gap-0.5">
-                <span className="text-[10px]">&#x1F525;</span>
-                {entry.streak}
+              <span className="text-accent text-[10px] font-mono uppercase tracking-wider">
+                {entry.streak}d
               </span>
             )}
 
             {/* Count */}
             <span
-              className={`font-bold text-sm tabular-nums ${
+              className={`font-mono text-xs tabular-nums ${
                 entry.isCurrentUser ? 'text-accent' : 'text-foreground'
               }`}
             >

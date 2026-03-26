@@ -32,12 +32,11 @@ export default function StatsBar() {
           animate={{ opacity: 1, scale: 1 }}
           className="flex items-center justify-center gap-2"
         >
-          <span className="text-streak text-lg">&#x1F525;</span>
-          <span className="text-foreground font-bold text-sm">{streak} day streak</span>
+          <span className="text-accent text-xs font-mono uppercase tracking-widest">{streak}d streak</span>
         </motion.div>
       )}
       {streak === 0 && entries.length > 0 && (
-        <p className="text-center text-secondary text-xs">
+        <p className="text-center text-secondary text-[10px] font-mono uppercase tracking-wider">
           The arena&apos;s still open. Log one today.
         </p>
       )}
@@ -45,14 +44,14 @@ export default function StatsBar() {
       {/* Annual goal */}
       <div className="px-2">
         <div className="flex justify-between items-baseline mb-1.5">
-          <span className="text-secondary text-xs font-medium uppercase tracking-wider">
+          <span className="text-secondary text-[10px] font-mono uppercase tracking-widest">
             {new Date().getFullYear()} Goal
           </span>
-          <span className="text-foreground text-xs font-bold">
+          <span className="text-foreground text-[10px] font-mono font-medium">
             {yearlyCount} / {profile.yearlyGoal}
           </span>
         </div>
-        <div className="h-2 bg-surface-elevated rounded-full overflow-hidden">
+        <div className="h-[2px] bg-surface-elevated rounded-full overflow-hidden">
           <motion.div
             className="h-full bg-accent rounded-full"
             initial={{ width: 0 }}
@@ -61,7 +60,7 @@ export default function StatsBar() {
           />
         </div>
         {projection && yearlyCount > 0 && (
-          <p className="text-muted text-xs mt-1 text-right">
+          <p className="text-muted text-[10px] font-mono mt-1 text-right">
             At this pace: {projection}
           </p>
         )}
@@ -82,15 +81,15 @@ function StatPill({
   success?: boolean;
 }) {
   return (
-    <div className="flex flex-col items-center bg-surface-elevated rounded-xl px-4 py-2.5 min-w-[72px]">
+    <div className="flex flex-col items-center border border-border-light rounded-lg px-4 py-2.5 min-w-[72px] backdrop-blur-sm">
       <span
-        className={`font-bold text-lg leading-tight ${
+        className={`font-serif font-light text-2xl leading-tight ${
           accent ? 'text-accent' : success ? 'text-success' : 'text-foreground'
         }`}
       >
         {value}
       </span>
-      <span className="text-muted text-[10px] uppercase tracking-wider font-medium">
+      <span className="text-muted text-[9px] uppercase tracking-[0.15em] font-mono">
         {label}
       </span>
     </div>

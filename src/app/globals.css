@@ -5,12 +5,15 @@
   --foreground: #F5F0EB;
   --accent: #FFD60A;
   --accent-hover: #E6BF00;
-  --surface: #141414;
-  --surface-elevated: #1E1E1E;
-  --text-secondary: #A0A0A0;
-  --text-muted: #555555;
+  --surface: #111113;
+  --surface-elevated: #1A1A1E;
+  --text-secondary: rgba(255, 255, 255, 0.5);
+  --text-muted: rgba(255, 255, 255, 0.3);
+  --text-tertiary: rgba(255, 255, 255, 0.15);
   --success: #5BA867;
   --streak: #FFD60A;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-active: rgba(255, 255, 255, 0.25);
 }
 
 @theme inline {
@@ -22,17 +25,20 @@
   --color-surface-elevated: var(--surface-elevated);
   --color-secondary: var(--text-secondary);
   --color-muted: var(--text-muted);
+  --color-tertiary: var(--text-tertiary);
   --color-success: var(--success);
   --color-streak: var(--streak);
-  --font-sans: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Impact", "Haettenschweiler", "Arial Narrow Bold", "Arial Black", sans-serif;
+  --color-border-light: var(--border-light);
+  --color-border-active: var(--border-active);
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
   --color-accent-text: #000000;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
@@ -40,14 +46,14 @@ body {
   inset: 0;
 }
 
-/* Noise texture overlay for tactile matte paper feel */
+/* Noise texture overlay */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 100;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 256px 256px;
@@ -63,7 +69,7 @@ body::before {
 }
 
 *::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 *::-webkit-scrollbar-track {
   background: transparent;
@@ -82,5 +88,14 @@ input, select, textarea {
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
