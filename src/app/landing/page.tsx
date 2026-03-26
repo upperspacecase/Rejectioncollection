@@ -475,9 +475,9 @@ export default function LandingPage() {
             <div className="l-header-left">
               <span>Rejection Collection // Every No Counts</span>
               <nav className="l-nav">
-                <a href="#">About</a>
-                <a href="#">Manifesto</a>
-                <a href="#">Leaderboard</a>
+                <a href="/about">About</a>
+                <a href="/manifesto">Manifesto</a>
+                <a href="/leaderboard">Leaderboard</a>
               </nav>
             </div>
             <div className="l-header-right">
@@ -492,11 +492,11 @@ export default function LandingPage() {
               <div className="pre-title">Now Collecting</div>
 
               <h1 className="track-title">rejection collection</h1>
-              <h2 className="track-artist">turn every no into proof you tried</h2>
+              <h2 className="track-artist">track your rejections like reps at the gym</h2>
 
               <div className="live-indicator">
                 <div className="pulse-dot" />
-                <span>REJECTIONS LOGGED: 12,847 / 3,201 COLLECTORS</span>
+                <span>LOG EVERY NO / BUILD STREAKS / HIT MILESTONES</span>
               </div>
 
               <a href="/" className="btn-tune">Start Collecting</a>
@@ -505,8 +505,8 @@ export default function LandingPage() {
 
           <footer className="l-footer">
             <div className="system-status">
-              DATA: LOCAL-FIRST<br />
-              STORAGE: DEVICE<br />
+              DATA: SYNCED<br />
+              AUTH: SECURE<br />
               AESTHETIC: COURAGE
             </div>
 
@@ -520,15 +520,15 @@ export default function LandingPage() {
             <div className="stat-list">
               <div className="stat-item">
                 <span className="stat-id">01</span>
-                <span>Jobs Applied -- 47 Nos</span>
+                <span>Log every ask and its outcome</span>
               </div>
               <div className="stat-item">
                 <span className="stat-id">02</span>
-                <span>Pitches Sent -- 23 Nos</span>
+                <span>Build daily streaks of courage</span>
               </div>
               <div className="stat-item">
                 <span className="stat-id">03</span>
-                <span>Cold Emails -- 112 Nos</span>
+                <span>Hit milestones from 1 to 1,000</span>
               </div>
             </div>
           </footer>

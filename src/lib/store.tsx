@@ -18,7 +18,7 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 import { AppState, Rejection, UserProfile } from './types';
-import { generateId } from './utils';
+import { generateId, getRejections, getStreak } from './utils';
 import { useAuth } from './auth';
 import { db } from './firebase';
 
@@ -38,13 +38,7 @@ const defaultState: AppState = {
 
 type Action =
   | { type: 'LOAD_STATE'; payload: AppState }
-  | {
-      type: 'LOG_ENTRY';
-      payload: {
-        ask: string;
-        isYes: boolean;
-      };
-    }
+  | { type: 'LOG_ENTRY'; payload: Rejection }
   | { type: 'TOGGLE_USEFUL'; payload: string }
   | { type: 'DELETE_ENTRY'; payload: string }
   | { type: 'COMPLETE_ONBOARDING'; payload: { name: string } }
@@ -56,16 +50,8 @@ function reducer(state: AppState, action: Action): AppState {
     case 'LOAD_STATE':
       return action.payload;
 
-    case 'LOG_ENTRY': {
-      const entry: Rejection = {
-        id: generateId(),
-        ask: action.payload.ask,
-        useful: false,
-        isYes: action.payload.isYes,
-        timestamp: Date.now(),
-      };
-      return { ...state, entries: [entry, ...state.entries] };
-    }
+    case 'LOG_ENTRY':
+      return { ...state, entries: [action.payload, ...state.entries] };
 
     case 'TOGGLE_USEFUL':
       return {
@@ -197,6 +183,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }
   }, [state, isLoaded]);
 
+  // Sync leaderboard row whenever entries change
+  useEffect(() => {
+    if (!user || !isLoaded || !state.profile.onboardingComplete) return;
+    const rejections = getRejections(state.entries).length;
+    const streak = getStreak(state.entries);
+    const leaderboardRef = doc(db, 'leaderboard', user.uid);
+    setDoc(leaderboardRef, {
+      name: state.profile.name || 'Anonymous',
+      rejectionCount: rejections,
+      streak,
+      updatedAt: Date.now(),
+    }).catch(() => {});
+  }, [user, isLoaded, state.entries, state.profile]);
+
   const logEntry = useCallback(
     (entry: { ask: string; isYes: boolean }) => {
       const newEntry: Rejection = {
@@ -207,11 +207,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         timestamp: Date.now(),
       };
 
-      dispatch({ type: 'LOG_ENTRY', payload: entry });
+      dispatch({ type: 'LOG_ENTRY', payload: newEntry });
 
       if (user) {
         const entryRef = doc(db, 'users', user.uid, 'entries', newEntry.id);
-        setDoc(entryRef, newEntry);
+        setDoc(entryRef, newEntry).catch(() => {});
       }
     },
     [user]
@@ -225,7 +225,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         const entry = state.entries.find((e) => e.id === id);
         if (entry) {
           const entryRef = doc(db, 'users', user.uid, 'entries', id);
-          setDoc(entryRef, { ...entry, useful: !entry.useful });
+          setDoc(entryRef, { ...entry, useful: !entry.useful }).catch(() => {});
         }
       }
     },
@@ -238,7 +238,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
       if (user) {
         const entryRef = doc(db, 'users', user.uid, 'entries', id);
-        deleteDoc(entryRef);
+        deleteDoc(entryRef).catch(() => {});
       }
     },
     [user]
@@ -255,7 +255,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           name,
           yearlyGoal: 1000,
           joinDate: Date.now(),
-        });
+        }).catch(() => {});
       }
     },
     [user]

@@ -211,11 +211,6 @@ function AppContent() {
             active={activeTab === 'board'}
             onClick={() => setActiveTab('board')}
           />
-          <TabButton
-            label="More"
-            active={false}
-            onClick={() => {}}
-          />
         </nav>
       </div>
 
