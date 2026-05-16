@@ -251,7 +251,7 @@ export function LogoMark({ size = 36 }: { size?: number }) {
         width: size,
         height: size,
         borderRadius: 12,
-        background: 'var(--pp-coral)',
+        background: 'var(--pp-mint)',
         border: '2px solid var(--pp-ink)',
         boxShadow: 'var(--pp-shadow)',
         display: 'inline-flex',

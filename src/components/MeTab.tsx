@@ -11,6 +11,7 @@ import {
 } from '@/lib/utils';
 import { getAchievedMilestones } from '@/lib/milestones';
 import { CheckIcon, TrophyIcon, FlameIcon } from './Icons';
+import ContributionHeatmap from './ContributionHeatmap';
 
 export default function MeTab() {
   const { state, updateName } = useStore();
@@ -104,6 +105,10 @@ export default function MeTab() {
             </button>
           )}
         </div>
+      </div>
+
+      <div className="mb-3">
+        <ContributionHeatmap />
       </div>
 
       <div className="grid grid-cols-2 gap-2 mb-3">

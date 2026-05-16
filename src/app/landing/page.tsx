@@ -3,7 +3,8 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import MarketingNav from '@/components/MarketingNav';
-import { CheckIcon, FlameIcon, ArrowRightIcon } from '@/components/Icons';
+import { CheckIcon, ArrowRightIcon, TrophyIcon } from '@/components/Icons';
+import { MILESTONES } from '@/lib/milestones';
 
 const CARDS = [
   { ask: 'Asked for the corner office',         result: 'No',  rotate: -8, top: 60,  left: 20,  bg: 'var(--pp-card)' },
@@ -14,11 +15,39 @@ const CARDS = [
   { ask: 'Asked Jess out for coffee',           result: 'Yes', rotate: 3,  top: 350, left: 60,  bg: 'var(--pp-card)' },
 ];
 
-const STATS = [
-  { num: '8,492', label: 'nos logged this week',  bg: 'var(--pp-coral-sf)' },
-  { num: '1,318', label: 'yeses (still counted!)', bg: 'var(--pp-mint-sf)' },
-  { num: '127',   label: 'collectors online now',  bg: 'var(--pp-sky-sf)' },
-  { num: '37',    label: 'milestones hit today',   bg: 'var(--pp-sun-sf)' },
+const HOW = [
+  ['Ask', 'Coffee, a raise, an intro, a discount, an extension. The muscle is the same.'],
+  ['Log', 'Five seconds. Type the ask, tap No or Yes. Done.'],
+  ['Watch the number climb', 'Streaks, nine milestones from 1 to 1,000, leaderboard if you want company.'],
+];
+
+const VS_NOTEBOOK = [
+  ['A notebook can’t do streak math.', 'This counts each day you showed up — and breaks if you skip.'],
+  ['A notebook lets you rewrite the story.', 'Logged in five seconds, before your brain edits what happened.'],
+  ['A notebook doesn’t level up.', 'You hit 1, then 10, then 100, then 1,000. Each one a moment.'],
+];
+
+const FAQ = [
+  [
+    'What counts as a "no"?',
+    'Any ask that didn’t go your way — outright refusal, soft brush-off, silence. After a week with no reply, log it as a no. Don’t let your brain rewrite it.',
+  ],
+  [
+    'What if I don’t get rejected often?',
+    'That’s the point. The app exists to make you ask more, not to score the asks you’d make anyway. The number only climbs when you put yourself in front of an answer.',
+  ],
+  [
+    'Is it free?',
+    'Free to start. No card required to sign up, no premium tier hiding behind a wall.',
+  ],
+  [
+    'Is my data private?',
+    'Your entries are yours alone. Only your display name and total count appear on the leaderboard — nothing about what you asked for.',
+  ],
+  [
+    'Can I mark a rejection as useful?',
+    'Yes. Some nos come with feedback, a referral, or a door you didn’t see. Star them. They show up filtered in your log.',
+  ],
 ];
 
 export default function LandingPage() {
@@ -34,10 +63,11 @@ export default function LandingPage() {
     >
       <MarketingNav active={null} hero />
 
+      {/* HERO */}
       <main
         className="grid items-center"
         style={{
-          padding: '32px 32px 0',
+          padding: '32px 32px 64px',
           gridTemplateColumns: 'minmax(0, 1.1fr) minmax(0, 0.9fr)',
           gap: 48,
           maxWidth: 1280,
@@ -58,14 +88,14 @@ export default function LandingPage() {
                 boxShadow: '0 0 0 3px rgba(34,199,146,0.25)',
               }}
             />
-            4,217 collectors logging this week
+            The scoreboard for people who ask for things
           </span>
 
           <h1
             className="font-display mb-5"
             style={{ fontSize: 'clamp(2.5rem, 7vw, 4.75rem)', lineHeight: 1 }}
           >
-            Collect every{' '}
+            Get told{' '}
             <span
               className="inline-block"
               style={{
@@ -79,9 +109,10 @@ export default function LandingPage() {
               }}
             >
               no
-            </span>
+            </span>{' '}
+            1,000 times
             <br />
-            like it&rsquo;s a trading card.
+            this year.
           </h1>
 
           <p
@@ -90,11 +121,12 @@ export default function LandingPage() {
               fontSize: 18,
               lineHeight: 1.55,
               color: 'var(--pp-ink-2)',
-              maxWidth: 520,
+              maxWidth: 540,
             }}
           >
-            The friendliest way to build rejection muscle. Log every ask, watch your streak
-            grow, and turn &ldquo;no&rdquo; from something scary into something you collect on purpose.
+            A five-second log, three times a day. The number that used to scare you becomes the
+            one you&rsquo;re proud of. By December you&rsquo;re asking for things you wouldn&rsquo;t
+            have considered in January.
           </p>
 
           <div className="flex items-center gap-3.5 mb-7 flex-wrap">
@@ -107,20 +139,19 @@ export default function LandingPage() {
               <ArrowRightIcon size={16} />
             </Link>
             <Link
-              href="/about"
+              href="/manifesto"
               className="pp-btn"
               style={{ padding: '14px 22px', fontSize: 15, background: 'var(--pp-card)' }}
             >
-              See how it works
+              Read the manifesto
             </Link>
           </div>
 
-          <div className="flex items-center flex-wrap gap-4 text-sm" style={{ color: 'var(--pp-ink-3)' }}>
-            {[
-              'Free forever',
-              'No card',
-              '30-second setup',
-            ].map((t) => (
+          <div
+            className="flex items-center flex-wrap gap-4 text-sm"
+            style={{ color: 'var(--pp-ink-3)' }}
+          >
+            {['Free to start', 'No card', '30-second setup'].map((t) => (
               <span key={t} className="inline-flex items-center gap-1.5">
                 <span
                   className="inline-flex items-center justify-center"
@@ -180,54 +211,293 @@ export default function LandingPage() {
               </div>
             </div>
           ))}
-
-          <div
-            className="pp-sticker absolute"
-            style={{
-              top: 14,
-              right: 0,
-              background: 'var(--pp-sun)',
-              transform: 'rotate(8deg)',
-            }}
-          >
-            +127 this week
-          </div>
-          <div
-            className="pp-sticker absolute inline-flex items-center gap-1.5"
-            style={{
-              bottom: 30,
-              left: -10,
-              background: 'var(--pp-mint)',
-              color: '#fff',
-              transform: 'rotate(-6deg)',
-            }}
-          >
-            <FlameIcon size={13} style={{ color: '#fff' }} /> 9-day streak
-          </div>
         </div>
       </main>
 
-      <section style={{ padding: '48px 32px 56px', maxWidth: 1280, margin: '0 auto' }}>
+      {/* TENSION HOOK */}
+      <section
+        style={{
+          padding: '64px 32px',
+          background: 'var(--pp-bg-deep)',
+          borderTop: '2px solid var(--pp-ink)',
+          borderBottom: '2px solid var(--pp-ink)',
+        }}
+      >
+        <div style={{ maxWidth: 720, margin: '0 auto' }}>
+          <div className="flex flex-col gap-4 mb-6">
+            {[
+              'You’ve been drafting that email for six weeks.',
+              'You haven’t asked for the raise because what if they say no.',
+              'You walked past the corner table and sat at the bad one anyway.',
+            ].map((line) => (
+              <p
+                key={line}
+                className="font-display"
+                style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)', lineHeight: 1.3 }}
+              >
+                {line}
+              </p>
+            ))}
+          </div>
+          <p
+            className="font-display"
+            style={{
+              fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
+              lineHeight: 1.2,
+              color: 'var(--pp-coral)',
+            }}
+          >
+            This app is built for that.
+          </p>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section style={{ padding: '64px 32px', maxWidth: 1080, margin: '0 auto' }}>
+        <h2
+          className="font-display mb-2"
+          style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
+        >
+          How it works.
+        </h2>
+        <p className="mb-8" style={{ fontSize: 16, color: 'var(--pp-ink-2)' }}>
+          Three moves. Repeat tomorrow.
+        </p>
+
         <div
           className="grid gap-4"
-          style={{
-            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-          }}
+          style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}
         >
-          {STATS.map((s) => (
-            <div
-              key={s.label}
-              className="pp-card"
-              style={{ padding: '14px 16px', background: s.bg }}
-            >
-              <div className="pp-num" style={{ fontSize: 28 }}>
-                {s.num}
-              </div>
-              <div className="text-xs mt-1" style={{ color: 'var(--pp-ink-2)' }}>
-                {s.label}
-              </div>
+          {HOW.map(([title, body], i) => (
+            <div key={title} className="pp-card" style={{ padding: 22 }}>
+              <span
+                className="flex items-center justify-center font-display font-bold mb-4"
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 12,
+                  background: 'var(--pp-sun)',
+                  color: 'var(--pp-ink)',
+                  border: '2px solid var(--pp-ink)',
+                  fontSize: 20,
+                }}
+              >
+                {i + 1}
+              </span>
+              <div className="font-display text-xl mb-2">{title}</div>
+              <p style={{ fontSize: 14, color: 'var(--pp-ink-2)', lineHeight: 1.55 }}>{body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* VS NOTEBOOK */}
+      <section style={{ padding: '64px 32px', background: 'var(--pp-card-2)' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto' }}>
+          <h2
+            className="font-display mb-2"
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
+          >
+            Why not a notebook?
+          </h2>
+          <p className="mb-8" style={{ fontSize: 16, color: 'var(--pp-ink-2)' }}>
+            Because a notebook can&rsquo;t keep score.
+          </p>
+
+          <div className="flex flex-col gap-3">
+            {VS_NOTEBOOK.map(([title, body], i) => (
+              <div
+                key={i}
+                className="pp-card flex gap-4 items-start"
+                style={{ padding: 20 }}
+              >
+                <span
+                  className="flex items-center justify-center flex-shrink-0 font-display font-bold"
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 999,
+                    background: 'var(--pp-coral)',
+                    color: '#fff',
+                    border: '2px solid var(--pp-ink)',
+                    boxShadow: 'var(--pp-shadow-sm)',
+                    fontSize: 16,
+                  }}
+                >
+                  ✕
+                </span>
+                <div>
+                  <div className="font-display text-lg mb-1">{title}</div>
+                  <p style={{ fontSize: 14, color: 'var(--pp-ink-2)', lineHeight: 1.55 }}>
+                    {body}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MILESTONE LADDER */}
+      <section style={{ padding: '64px 32px', maxWidth: 1280, margin: '0 auto' }}>
+        <h2
+          className="font-display mb-2"
+          style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
+        >
+          Nine milestones. 1 to 1,000.
+        </h2>
+        <p className="mb-8" style={{ fontSize: 16, color: 'var(--pp-ink-2)' }}>
+          Each one a different shape of brave.
+        </p>
+
+        <div
+          className="grid gap-3"
+          style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}
+        >
+          {MILESTONES.map((m, i) => {
+            const palettes = [
+              'var(--pp-coral-sf)',
+              'var(--pp-mint-sf)',
+              'var(--pp-sun-sf)',
+              'var(--pp-sky-sf)',
+              'var(--pp-grape-sf)',
+            ];
+            return (
+              <div
+                key={m.count}
+                className="pp-card"
+                style={{
+                  padding: 18,
+                  background: palettes[i % palettes.length],
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <TrophyIcon size={18} />
+                  <span
+                    className="text-xs font-bold uppercase tracking-wider"
+                    style={{ color: 'var(--pp-ink-2)' }}
+                  >
+                    #{i + 1}
+                  </span>
+                </div>
+                <div className="pp-num mb-1" style={{ fontSize: 32 }}>
+                  {m.count.toLocaleString()}
+                </div>
+                <div className="font-display text-base mb-1.5">{m.title}</div>
+                <p
+                  className="text-xs"
+                  style={{ color: 'var(--pp-ink-2)', lineHeight: 1.5 }}
+                >
+                  {m.message}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* MANIFESTO PULL QUOTE */}
+      <section style={{ padding: '64px 32px', background: 'var(--pp-sun-sf)' }}>
+        <div style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
+          <p
+            className="font-display mb-4"
+            style={{
+              fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
+              lineHeight: 1.25,
+              color: 'var(--pp-ink)',
+            }}
+          >
+            &ldquo;The people who win the most are the people who hear no the most. Not because
+            they&rsquo;re lucky. Because they ask.&rdquo;
+          </p>
+          <Link
+            href="/manifesto"
+            className="text-sm font-semibold"
+            style={{ color: 'var(--pp-coral)', textDecoration: 'none' }}
+          >
+            Read the manifesto →
+          </Link>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section style={{ padding: '64px 32px', maxWidth: 720, margin: '0 auto' }}>
+        <h2
+          className="font-display mb-8"
+          style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
+        >
+          Quick questions.
+        </h2>
+        <div className="flex flex-col gap-3">
+          {FAQ.map(([q, a]) => (
+            <details
+              key={q}
+              className="pp-card"
+              style={{ padding: '16px 20px', background: 'var(--pp-card)' }}
+            >
+              <summary
+                className="font-display cursor-pointer list-none flex justify-between items-center"
+                style={{ fontSize: 17 }}
+              >
+                {q}
+                <span
+                  className="font-display"
+                  style={{ fontSize: 22, color: 'var(--pp-coral)' }}
+                >
+                  +
+                </span>
+              </summary>
+              <p
+                className="mt-3"
+                style={{ fontSize: 14, color: 'var(--pp-ink-2)', lineHeight: 1.6 }}
+              >
+                {a}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* REPEAT CTA */}
+      <section style={{ padding: '32px 32px 80px' }}>
+        <div
+          className="pp-card text-center"
+          style={{
+            maxWidth: 720,
+            margin: '0 auto',
+            padding: '48px 32px',
+            background: 'var(--pp-coral)',
+            color: '#fff',
+            boxShadow: 'var(--pp-shadow-lg)',
+          }}
+        >
+          <h2
+            className="font-display mb-3"
+            style={{ fontSize: 'clamp(1.75rem, 4.5vw, 2.5rem)', lineHeight: 1.1 }}
+          >
+            Your first rejection is out there.
+          </h2>
+          <p
+            className="mb-7 mx-auto"
+            style={{ fontSize: 17, lineHeight: 1.55, opacity: 0.92, maxWidth: 480 }}
+          >
+            Sign up, log it, watch the count climb. Free to start, no card.
+          </p>
+          <Link
+            href="/"
+            className="pp-btn"
+            style={{
+              padding: '14px 26px',
+              fontSize: 15,
+              background: 'var(--pp-ink)',
+              color: 'var(--pp-bg)',
+              borderColor: 'var(--pp-bg)',
+              boxShadow: '0 3px 0 rgba(0,0,0,0.5)',
+            }}
+          >
+            Start collecting
+            <ArrowRightIcon size={16} />
+          </Link>
         </div>
       </section>
     </div>
