@@ -67,7 +67,7 @@ export default function LandingPage() {
 
   return (
     <div
-      className="pp-dots min-h-screen"
+      className="pp-dots min-h-dvh"
       style={{ background: 'var(--pp-bg)', backgroundSize: '18px 18px' }}
     >
       <MarketingNav active={null} hero />

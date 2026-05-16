@@ -51,7 +51,7 @@ function AppContent() {
 
   if (!isLoaded) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-dvh flex items-center justify-center">
         <div className="pp-spinner" />
       </div>
     );
@@ -63,7 +63,7 @@ function AppContent() {
 
   return (
     <div
-      className="h-screen flex flex-col overflow-hidden"
+      className="h-dvh flex flex-col overflow-hidden"
       style={{ background: 'var(--pp-bg)' }}
     >
       <div className="flex-1 overflow-hidden">
@@ -156,7 +156,7 @@ function AuthGate() {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-dvh flex items-center justify-center">
         <div className="pp-spinner" />
       </div>
     );

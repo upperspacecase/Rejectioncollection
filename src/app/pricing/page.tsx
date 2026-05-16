@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <div style={{ background: 'var(--pp-bg)', minHeight: '100vh' }}>
+    <div className="min-h-dvh" style={{ background: 'var(--pp-bg)' }}>
       <ScrollPageBodyToggle />
       <div
         className="px-5 md:px-8 pt-8 md:pt-10"

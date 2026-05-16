@@ -7,12 +7,22 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
   signOut as firebaseSignOut,
 } from 'firebase/auth';
 import { auth } from './firebase';
 
 const googleProvider = new GoogleAuthProvider();
+
+function isStandaloneDisplay(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (window.matchMedia?.('(display-mode: standalone)').matches) return true;
+  // Legacy iOS Safari standalone flag
+  const nav = window.navigator as Navigator & { standalone?: boolean };
+  return nav.standalone === true;
+}
 
 interface AuthContext {
   user: User | null;
@@ -30,8 +40,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    // Surface any pending redirect-based sign-in (used in PWA / standalone mode
+    // because signInWithPopup is unreliable when there is no parent window).
+    getRedirectResult(auth).catch(() => {});
+
+    const unsubscribe = onAuthStateChanged(auth, (u) => {
+      setUser(u);
       setLoading(false);
     });
     return unsubscribe;
@@ -46,7 +60,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function signInWithGoogle() {
-    await signInWithPopup(auth, googleProvider);
+    if (isStandaloneDisplay()) {
+      // Redirect-based flow — popup doesn't work reliably from a PWA.
+      await signInWithRedirect(auth, googleProvider);
+      return;
+    }
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (err) {
+      const code = (err as { code?: string })?.code;
+      // Some browsers (Safari with strict tracking prevention, mobile in-app
+      // browsers, etc.) block the popup. Fall back to redirect.
+      if (
+        code === 'auth/popup-blocked' ||
+        code === 'auth/operation-not-supported-in-this-environment' ||
+        code === 'auth/cancelled-popup-request'
+      ) {
+        await signInWithRedirect(auth, googleProvider);
+        return;
+      }
+      throw err;
+    }
   }
 
   async function signOut() {
@@ -54,7 +88,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signInWithGoogle, signOut }}>
+    <AuthContext.Provider
+      value={{ user, loading, signIn, signUp, signInWithGoogle, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

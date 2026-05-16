@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Rejection Collection",
   description:
-    "The friendliest way to build rejection muscle. Log every ask, watch your streak grow, and turn 'no' into something you collect on purpose.",
+    "The scoreboard for people who ask for things. Log your rejections, build a streak, stop flinching when the answer is no.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -17,8 +17,6 @@ export const viewport: Viewport = {
   themeColor: "#FFF1E0",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export default function RootLayout({

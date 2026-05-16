@@ -79,6 +79,10 @@ body {
   position: fixed;
   inset: 0;
   width: 100%;
+  /* Use dynamic viewport height so iOS Safari's bottom toolbar doesn't
+     cover the bottom of the app shell. Falls back to 100% on older browsers. */
+  height: 100%;
+  height: 100dvh;
 }
 
 /* Marketing pages opt out of the fixed app shell */

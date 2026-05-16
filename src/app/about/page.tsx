@@ -43,7 +43,7 @@ const STEPS = [
 export default function AboutPage() {
   return (
     <div
-      className="min-h-screen px-5 md:px-8 pt-8 md:pt-10 pb-14"
+      className="min-h-dvh px-5 md:px-8 pt-8 md:pt-10 pb-14"
       style={{ background: 'var(--pp-bg)' }}
     >
       <ScrollPageBodyToggle />
