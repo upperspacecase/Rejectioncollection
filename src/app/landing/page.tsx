@@ -74,14 +74,8 @@ export default function LandingPage() {
 
       {/* HERO */}
       <main
-        className="grid items-center"
-        style={{
-          padding: '32px 32px 64px',
-          gridTemplateColumns: 'minmax(0, 1.1fr) minmax(0, 0.9fr)',
-          gap: 48,
-          maxWidth: 1280,
-          margin: '0 auto',
-        }}
+        className="grid items-center grid-cols-1 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-8 md:gap-12 px-5 md:px-8 pt-6 md:pt-8 pb-12 md:pb-16"
+        style={{ maxWidth: 1280, margin: '0 auto' }}
       >
         <div>
           <span
@@ -102,7 +96,7 @@ export default function LandingPage() {
 
           <h1
             className="font-display mb-5"
-            style={{ fontSize: 'clamp(2.5rem, 7vw, 4.75rem)', lineHeight: 1 }}
+            style={{ fontSize: 'clamp(2.25rem, 7vw, 4.75rem)', lineHeight: 1.05 }}
           >
             Get told{' '}
             <span
@@ -119,9 +113,7 @@ export default function LandingPage() {
             >
               no
             </span>{' '}
-            1,000 times
-            <br />
-            this year.
+            1,000 times this year.
           </h1>
 
           <p
@@ -181,7 +173,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="relative hidden md:block" style={{ height: 460 }}>
+        <div className="relative hidden md:block min-h-[460px]" style={{ height: 460 }}>
           {CARDS.map((c, i) => (
             <div
               key={i}
@@ -225,8 +217,8 @@ export default function LandingPage() {
 
       {/* TENSION HOOK */}
       <section
+        className="px-5 md:px-8 py-12 md:py-16"
         style={{
-          padding: '64px 32px',
           background: 'var(--pp-bg-deep)',
           borderTop: '2px solid var(--pp-ink)',
           borderBottom: '2px solid var(--pp-ink)',
@@ -262,7 +254,10 @@ export default function LandingPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section style={{ padding: '64px 32px', maxWidth: 1080, margin: '0 auto' }}>
+      <section
+        className="px-5 md:px-8 py-12 md:py-16"
+        style={{ maxWidth: 1080, margin: '0 auto' }}
+      >
         <h2
           className="font-display mb-2"
           style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
@@ -301,7 +296,10 @@ export default function LandingPage() {
       </section>
 
       {/* VS NOTEBOOK */}
-      <section style={{ padding: '64px 32px', background: 'var(--pp-card-2)' }}>
+      <section
+        className="px-5 md:px-8 py-12 md:py-16"
+        style={{ background: 'var(--pp-card-2)' }}
+      >
         <div style={{ maxWidth: 1080, margin: '0 auto' }}>
           <h2
             className="font-display mb-2"
@@ -348,7 +346,10 @@ export default function LandingPage() {
       </section>
 
       {/* MILESTONE LADDER */}
-      <section style={{ padding: '64px 32px', maxWidth: 1280, margin: '0 auto' }}>
+      <section
+        className="px-5 md:px-8 py-12 md:py-16"
+        style={{ maxWidth: 1280, margin: '0 auto' }}
+      >
         <h2
           className="font-display mb-2"
           style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
@@ -411,7 +412,10 @@ export default function LandingPage() {
       </div>
 
       {/* MANIFESTO PULL QUOTE */}
-      <section style={{ padding: '64px 32px', background: 'var(--pp-sun-sf)' }}>
+      <section
+        className="px-5 md:px-8 py-12 md:py-16"
+        style={{ background: 'var(--pp-sun-sf)' }}
+      >
         <div style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
           <p
             className="font-display mb-4"
@@ -435,7 +439,10 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section style={{ padding: '64px 32px', maxWidth: 720, margin: '0 auto' }}>
+      <section
+        className="px-5 md:px-8 py-12 md:py-16"
+        style={{ maxWidth: 720, margin: '0 auto' }}
+      >
         <h2
           className="font-display mb-8"
           style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
@@ -473,13 +480,12 @@ export default function LandingPage() {
       </section>
 
       {/* REPEAT CTA */}
-      <section style={{ padding: '32px 32px 80px' }}>
+      <section className="px-5 md:px-8 pt-6 md:pt-8 pb-16 md:pb-20">
         <div
-          className="pp-card text-center"
+          className="pp-card text-center px-6 py-10 md:px-8 md:py-12"
           style={{
             maxWidth: 720,
             margin: '0 auto',
-            padding: '48px 32px',
             background: 'var(--pp-coral)',
             color: '#fff',
             boxShadow: 'var(--pp-shadow-lg)',

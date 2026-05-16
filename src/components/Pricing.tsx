@@ -31,10 +31,11 @@ interface Props {
 }
 
 export default function Pricing({ variant = 'section' }: Props) {
-  const outerPadding = variant === 'page' ? '40px 32px 56px' : '64px 32px';
+  const padClass =
+    variant === 'page' ? 'px-5 md:px-8 pt-8 pb-12 md:pt-10 md:pb-14' : 'px-5 md:px-8 py-12 md:py-16';
 
   return (
-    <section style={{ padding: outerPadding }}>
+    <section className={padClass}>
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
         <span
           className="pp-pill mb-4 inline-flex"

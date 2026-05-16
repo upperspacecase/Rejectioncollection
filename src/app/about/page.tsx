@@ -42,7 +42,10 @@ const STEPS = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen" style={{ background: 'var(--pp-bg)', padding: '40px 32px 56px' }}>
+    <div
+      className="min-h-screen px-5 md:px-8 pt-8 md:pt-10 pb-14"
+      style={{ background: 'var(--pp-bg)' }}
+    >
       <ScrollPageBodyToggle />
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
         <MarketingNav active="about" />

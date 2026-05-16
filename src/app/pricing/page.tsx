@@ -13,8 +13,11 @@ export default function PricingPage() {
   return (
     <div style={{ background: 'var(--pp-bg)', minHeight: '100vh' }}>
       <ScrollPageBodyToggle />
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px' }}>
-        <MarketingNav active={null} />
+      <div
+        className="px-5 md:px-8 pt-8 md:pt-10"
+        style={{ maxWidth: 1200, margin: '0 auto' }}
+      >
+        <MarketingNav active="pricing" />
       </div>
       <Pricing variant="page" />
     </div>
