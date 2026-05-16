@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import MarketingNav from '@/components/MarketingNav';
+import Pricing from '@/components/Pricing';
 import { CheckIcon, ArrowRightIcon, TrophyIcon } from '@/components/Icons';
 import { MILESTONES } from '@/lib/milestones';
 
@@ -38,7 +39,15 @@ const FAQ = [
   ],
   [
     'Is it free?',
-    'Free to start. No card required to sign up, no premium tier hiding behind a wall.',
+    'The Collector tier is free forever — unlimited logs, streaks, milestones, leaderboard, heatmap. No card required to sign up. The Committed tier ($5/mo or $35/yr) launches once the 50 founding members are seated. Founders get Committed free for life.',
+  ],
+  [
+    'What’s a founding member?',
+    'The first 50 people to sign up. Founders get the full app free forever (including the paid Committed tier when it launches), access to a small Discord, a founder badge on the leaderboard, and a name on the supporters page. Why so few: 50 founders is small enough to actually listen to.',
+  ],
+  [
+    'When does the Committed tier launch?',
+    'Once the 50 founders are seated. We’re building paid features — notes per entry, weekly digest, year-in-review, ask library, phrase templates — in the order founders ask for them.',
   ],
   [
     'Is my data private?',
@@ -395,6 +404,11 @@ export default function LandingPage() {
           })}
         </div>
       </section>
+
+      {/* PRICING */}
+      <div style={{ background: 'var(--pp-bg)' }}>
+        <Pricing />
+      </div>
 
       {/* MANIFESTO PULL QUOTE */}
       <section style={{ padding: '64px 32px', background: 'var(--pp-sun-sf)' }}>

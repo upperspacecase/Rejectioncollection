@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { LogoMark } from './Icons';
 
-type Active = 'home' | 'about' | 'manifesto' | 'leaderboard' | null;
+type Active = 'home' | 'about' | 'manifesto' | 'leaderboard' | 'pricing' | null;
 
 export default function MarketingNav({ active, hero }: { active: Active; hero?: boolean }) {
   const links: { id: Exclude<Active, null>; label: string; href: string }[] = [
     { id: 'about', label: 'About', href: '/about' },
     { id: 'manifesto', label: 'Manifesto', href: '/manifesto' },
+    { id: 'pricing', label: 'Pricing', href: '/pricing' },
     { id: 'leaderboard', label: 'Leaderboard', href: '/leaderboard' },
   ];
 
