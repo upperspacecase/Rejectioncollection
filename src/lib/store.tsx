@@ -43,6 +43,7 @@ type Action =
   | { type: 'DELETE_ENTRY'; payload: string }
   | { type: 'COMPLETE_ONBOARDING'; payload: { name: string } }
   | { type: 'UPDATE_GOAL'; payload: number }
+  | { type: 'UPDATE_NAME'; payload: string }
   | { type: 'SYNC_ENTRIES'; payload: Rejection[] };
 
 function reducer(state: AppState, action: Action): AppState {
@@ -84,6 +85,12 @@ function reducer(state: AppState, action: Action): AppState {
         profile: { ...state.profile, yearlyGoal: action.payload },
       };
 
+    case 'UPDATE_NAME':
+      return {
+        ...state,
+        profile: { ...state.profile, name: action.payload },
+      };
+
     case 'SYNC_ENTRIES':
       return {
         ...state,
@@ -102,6 +109,7 @@ interface StoreContextValue {
   toggleUseful: (id: string) => void;
   deleteEntry: (id: string) => void;
   completeOnboarding: (name: string) => void;
+  updateName: (name: string) => void;
   isLoaded: boolean;
 }
 
@@ -261,6 +269,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     [user]
   );
 
+  const updateName = useCallback(
+    (name: string) => {
+      const trimmed = name.trim() || 'Anonymous';
+      dispatch({ type: 'UPDATE_NAME', payload: trimmed });
+
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid);
+        setDoc(userDocRef, { name: trimmed }, { merge: true }).catch(() => {});
+      }
+    },
+    [user]
+  );
+
   return (
     <StoreContext.Provider
       value={{
@@ -270,6 +291,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         toggleUseful,
         deleteEntry,
         completeOnboarding,
+        updateName,
         isLoaded,
       }}
     >

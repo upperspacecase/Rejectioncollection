@@ -1,8 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import MarketingNav from '@/components/MarketingNav';
+import ScrollPageBodyToggle from '@/components/ScrollBodyToggle';
+import { ArrowRightIcon, TrophyIcon, FlameIcon, MedalIcon } from '@/components/Icons';
 
 interface LeaderboardRow {
   name: string;
@@ -15,9 +19,6 @@ export default function PublicLeaderboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Public read requires auth in rules, so we fetch what we can
-    // For truly public access, we'd use a Cloud Function. For now,
-    // show the board structure and invite sign-in.
     const q = query(
       collection(db, 'leaderboard'),
       orderBy('rejectionCount', 'desc'),
@@ -27,116 +28,159 @@ export default function PublicLeaderboard() {
     getDocs(q)
       .then((snapshot) => {
         const rows: LeaderboardRow[] = [];
-        snapshot.forEach((doc) => {
-          rows.push(doc.data() as LeaderboardRow);
-        });
+        snapshot.forEach((doc) => rows.push(doc.data() as LeaderboardRow));
         setBoard(rows);
       })
-      .catch(() => {
-        // Not authenticated -- expected for public visitors
-      })
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
+  const top = board.slice(0, 3);
+  const rest = board.slice(3);
+  const topBg = ['var(--pp-sun)', 'var(--pp-bg-deep)', 'var(--pp-coral-sf)'];
+
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-y-auto" style={{ position: 'static' }}>
-      <div className="max-w-2xl mx-auto px-6 py-16 md:py-24">
-        {/* Nav */}
-        <nav className="mb-16 flex items-center justify-between">
-          <a
-            href="/landing"
-            className="text-secondary text-[10px] font-mono uppercase tracking-[0.15em] hover:text-foreground transition-colors"
-          >
-            Back
-          </a>
-          <div className="flex gap-6">
-            <a href="/about" className="text-secondary text-[10px] font-mono uppercase tracking-[0.15em] hover:text-foreground transition-colors">
-              About
-            </a>
-            <a href="/manifesto" className="text-secondary text-[10px] font-mono uppercase tracking-[0.15em] hover:text-foreground transition-colors">
-              Manifesto
-            </a>
-          </div>
-        </nav>
+    <div className="min-h-screen" style={{ background: 'var(--pp-bg)', padding: '40px 32px 56px' }}>
+      <ScrollPageBodyToggle />
+      <div style={{ maxWidth: 720, margin: '0 auto' }}>
+        <MarketingNav active="leaderboard" />
 
-        {/* Header */}
-        <header className="mb-12">
-          <p className="text-secondary text-[10px] font-mono uppercase tracking-[0.2em] mb-4">Leaderboard</p>
-          <h1 className="font-serif font-light text-4xl md:text-5xl lowercase leading-tight mb-4">
-            the board
-          </h1>
-          <p className="font-serif font-light text-lg italic text-secondary">
-            Ranked by total rejections collected. The only scoreboard where more &ldquo;no&rdquo;s mean you&rsquo;re winning.
-          </p>
-        </header>
+        <span className="pp-pill mb-4 inline-flex" style={{ background: 'var(--pp-sun-sf)' }}>
+          <span style={{ width: 8, height: 8, borderRadius: 999, background: 'var(--pp-sun)' }} />
+          The Board
+        </span>
 
-        {/* Board */}
+        <h1 className="font-display mb-3" style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)' }}>
+          The leaderboard
+          <br />
+          with no losers.
+        </h1>
+        <p
+          className="mb-10"
+          style={{ fontSize: 17, lineHeight: 1.55, color: 'var(--pp-ink-2)', maxWidth: 580 }}
+        >
+          Ranked by total rejections collected. The only scoreboard where more no&rsquo;s mean
+          you&rsquo;re winning.
+        </p>
+
         {loading ? (
-          <div className="flex justify-center py-16">
-            <div className="w-4 h-4 border border-accent border-t-transparent rounded-full animate-spin" />
+          <div className="flex justify-center py-12">
+            <div className="pp-spinner" />
           </div>
-        ) : board.length > 0 ? (
-          <div className="space-y-1">
-            {/* Header row */}
-            <div className="flex items-center gap-3 px-3 py-2 text-muted text-[9px] font-mono uppercase tracking-widest">
-              <span className="w-8 text-right">Rank</span>
-              <span className="flex-1">Collector</span>
-              <span>Streak</span>
-              <span className="w-16 text-right">Nos</span>
-            </div>
-
-            <div className="h-px bg-border-light" />
-
-            {board.map((entry, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:border-border-light transition-colors"
-              >
-                <span
-                  className={`w-8 text-right font-mono text-xs ${
-                    i < 3 ? 'text-accent' : 'text-muted'
-                  }`}
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-
-                <span className="flex-1 font-serif font-light text-base text-foreground/80 truncate">
-                  {entry.name}
-                </span>
-
-                {entry.streak > 0 && (
-                  <span className="text-accent text-[10px] font-mono uppercase tracking-wider">
-                    {entry.streak}d
-                  </span>
-                )}
-
-                <span className="w-16 text-right font-mono text-xs tabular-nums text-foreground">
-                  {entry.rejectionCount.toLocaleString()}
-                </span>
-              </div>
-            ))}
-          </div>
+        ) : board.length === 0 ? (
+          <EmptyState />
         ) : (
-          <div className="text-center py-16 space-y-4">
-            <p className="font-serif font-light text-xl text-foreground/60 lowercase">
-              the board is empty
-            </p>
-            <p className="text-secondary text-[10px] font-mono uppercase tracking-widest">
-              Sign in and log your first rejection to claim the top spot.
-            </p>
-          </div>
+          <>
+            {top.length > 0 && (
+              <div className="grid grid-cols-3 gap-3 mb-5">
+                {top.map((t, i) => (
+                  <div
+                    key={i}
+                    className="pp-card text-center"
+                    style={{ padding: '18px 12px', background: topBg[i] }}
+                  >
+                    <div className="flex justify-center mb-2">
+                      <MedalIcon rank={(i + 1) as 1 | 2 | 3} size={36} />
+                    </div>
+                    <div className="pp-num" style={{ fontSize: 26 }}>
+                      {t.rejectionCount.toLocaleString()}
+                    </div>
+                    <div className="text-sm font-bold mt-1 truncate">{t.name}</div>
+                    {t.streak > 0 && (
+                      <div
+                        className="text-xs font-semibold mt-1 inline-flex items-center gap-1"
+                        style={{ color: 'var(--pp-ink-2)' }}
+                      >
+                        <FlameIcon size={12} style={{ color: 'var(--pp-coral)' }} />
+                        {t.streak}d
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="flex flex-col gap-1.5">
+              {rest.map((row, i) => (
+                <div
+                  key={i}
+                  className="pp-card pp-card-sm flex items-center gap-3"
+                  style={{ padding: '10px 14px' }}
+                >
+                  <span className="pp-num" style={{ fontSize: 16, width: 28, opacity: 0.7 }}>
+                    {i + 4}
+                  </span>
+                  <span className="flex-1 font-semibold text-sm truncate">{row.name}</span>
+                  {row.streak > 0 && (
+                    <span
+                      className="inline-flex items-center gap-1 text-xs font-bold"
+                      style={{
+                        padding: '2px 8px',
+                        borderRadius: 999,
+                        background: 'var(--pp-sun-sf)',
+                        color: 'var(--pp-ink)',
+                        border: '1.5px solid var(--pp-ink)',
+                      }}
+                    >
+                      <FlameIcon size={10} style={{ color: 'var(--pp-coral)' }} />
+                      {row.streak}d
+                    </span>
+                  )}
+                  <span className="pp-num" style={{ fontSize: 16 }}>
+                    {row.rejectionCount.toLocaleString()}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </>
         )}
 
-        {/* CTA */}
-        <div className="mt-16 pt-12 border-t border-border-light text-center">
-          <a
-            href="/"
-            className="inline-flex items-center min-h-[44px] px-8 border border-border-light rounded-lg font-mono text-[11px] uppercase tracking-[0.15em] text-foreground hover:border-border-active transition-colors"
-          >
-            Start Collecting
-          </a>
+        <div className="pp-tip mt-8">
+          <span className="pp-tip-icon">?</span>
+          <div>
+            <b>Curious how it ranks?</b> We sort by total nos collected. Streaks and useful-rejections
+            show up as little badges next to your name.
+          </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function EmptyState() {
+  return (
+    <div
+      className="pp-card text-center"
+      style={{ padding: 40, background: 'var(--pp-card-2)' }}
+    >
+      <div
+        className="mx-auto mb-4 flex items-center justify-center"
+        style={{
+          width: 88,
+          height: 88,
+          borderRadius: 22,
+          background: 'var(--pp-sun)',
+          border: '2px solid var(--pp-ink)',
+          boxShadow: 'var(--pp-shadow-lg)',
+          transform: 'rotate(-6deg)',
+        }}
+      >
+        <TrophyIcon size={44} />
+      </div>
+      <h2 className="font-display text-2xl mb-2">The board is wide open!</h2>
+      <p
+        className="mb-5 mx-auto"
+        style={{ fontSize: 15, color: 'var(--pp-ink-2)', maxWidth: 420, lineHeight: 1.55 }}
+      >
+        Sign in and log your first rejection to plant your flag at #1. (You only have to beat zero.)
+      </p>
+      <Link
+        href="/"
+        className="pp-btn pp-btn-primary"
+        style={{ padding: '12px 22px' }}
+      >
+        Claim the top spot
+        <ArrowRightIcon size={16} />
+      </Link>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { MilestoneDef } from '@/lib/types';
+import { ArrowRightIcon, Confetti, TrophyIcon } from './Icons';
 
 interface MilestoneModalProps {
   milestone: MilestoneDef;
@@ -9,76 +10,106 @@ interface MilestoneModalProps {
 }
 
 export default function MilestoneModal({ milestone, onClose }: MilestoneModalProps) {
+  async function handleShare() {
+    const text = `Just hit ${milestone.count.toLocaleString()} rejections collected on Rejection Collection. ${milestone.title}.`;
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({ title: 'Rejection Collection', text });
+        return;
+      } catch {
+        // fall through to clipboard
+      }
+    }
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-[60] flex items-center justify-center p-6"
+      className="fixed inset-0 z-[60] flex items-center justify-center p-5"
+      style={{
+        background: 'rgba(34,23,51,0.55)',
+        backdropFilter: 'blur(6px)',
+        WebkitBackdropFilter: 'blur(6px)',
+      }}
     >
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <Confetti color="var(--pp-grape)" />
 
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{
-          type: 'spring',
-          stiffness: 300,
-          damping: 22,
-          delay: 0.1,
+        exit={{ scale: 0.92, opacity: 0 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 22, delay: 0.1 }}
+        className="relative w-full text-center z-10"
+        style={{
+          maxWidth: 320,
+          padding: '28px 22px',
+          background: 'var(--pp-card)',
+          borderRadius: 22,
+          border: '2.5px solid var(--pp-ink)',
+          boxShadow: 'var(--pp-shadow-lg)',
         }}
-        className="relative bg-surface rounded-lg p-8 max-w-sm w-full text-center z-10
-          border border-accent/20"
       >
-        {/* Milestone count */}
-        <motion.div
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{
-            type: 'spring',
-            stiffness: 200,
-            damping: 15,
-            delay: 0.3,
+        <div
+          className="pp-sticker absolute"
+          style={{
+            top: -14,
+            right: -10,
+            background: 'var(--pp-sun)',
+            transform: 'rotate(10deg)',
+            gap: 6,
           }}
-          className="font-serif font-light text-accent leading-none mb-4"
-          style={{ fontSize: 'clamp(3rem, 12vw, 5rem)' }}
         >
-          {milestone.count.toLocaleString()}
+          <TrophyIcon size={14} />
+          milestone
+        </div>
+
+        <motion.div
+          initial={{ scale: 0.5, rotate: -15, opacity: 0 }}
+          animate={{ scale: 1, rotate: -3, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 14, delay: 0.25 }}
+          className="inline-block mb-4"
+          style={{
+            padding: '10px 20px',
+            background: 'var(--pp-grape)',
+            color: '#fff',
+            border: '2.5px solid var(--pp-ink)',
+            borderRadius: 18,
+            boxShadow: 'var(--pp-shadow-lg)',
+          }}
+        >
+          <div className="pp-num" style={{ fontSize: 64 }}>
+            {milestone.count.toLocaleString()}
+          </div>
         </motion.div>
 
-        {/* Title */}
-        <motion.h2
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45 }}
-          className="text-foreground font-mono text-[10px] uppercase tracking-[0.2em] mb-4"
-        >
-          {milestone.title}
-        </motion.h2>
-
-        {/* Message */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55 }}
-          className="text-secondary font-serif font-light text-base italic leading-relaxed mb-8"
-        >
+        <div className="font-display text-2xl mb-2">{milestone.title}.</div>
+        <p className="text-sm mb-5" style={{ color: 'var(--pp-ink-2)', lineHeight: 1.55 }}>
           {milestone.message}
-        </motion.p>
+        </p>
 
-        {/* Dismiss */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-          onClick={onClose}
-          className="px-6 py-2.5 rounded-lg border border-border-light text-foreground font-mono text-[11px] uppercase tracking-[0.15em]
-            hover:border-border-active active:scale-[0.97] transition-all duration-200 cursor-pointer"
-        >
-          Keep going
-        </motion.button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleShare}
+            className="pp-btn flex-1"
+            style={{ padding: '12px 0', fontSize: 13 }}
+          >
+            Share win
+          </button>
+          <button
+            onClick={onClose}
+            className="pp-btn pp-btn-primary flex-1"
+            style={{ padding: '12px 0', fontSize: 13 }}
+          >
+            Keep going
+            <ArrowRightIcon size={14} />
+          </button>
+        </div>
       </motion.div>
     </motion.div>
   );

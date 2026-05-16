@@ -1,117 +1,131 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import MarketingNav from '@/components/MarketingNav';
+import { ArrowRightIcon, TargetIcon, BriefcaseIcon, SparkleIcon } from '@/components/Icons';
+import ScrollPageBodyToggle from '@/components/ScrollBodyToggle';
 
 export const metadata: Metadata = {
-  title: 'About - Rejection Collection',
-  description: 'The scoreboard for people who ask for things.',
+  title: 'About — Rejection Collection',
+  description: 'The friendliest way to build rejection muscle.',
 };
+
+const PERSONAS = [
+  {
+    title: 'Founders',
+    icon: <TargetIcon size={28} />,
+    body:
+      'Cold emails, pitch decks, asking for intros. The 113th email feels lighter when you can see the other 112.',
+    bg: 'var(--pp-coral-sf)',
+  },
+  {
+    title: 'Job seekers',
+    icon: <BriefcaseIcon size={28} />,
+    body:
+      'Apply, follow up, negotiate. Stop catastrophizing one rejection when you have a stack of attempts.',
+    bg: 'var(--pp-mint-sf)',
+  },
+  {
+    title: 'Anyone, really',
+    icon: <SparkleIcon size={28} />,
+    body:
+      'Ask for the table by the window. Return the shirt. Request an extension. Small reps compound.',
+    bg: 'var(--pp-sun-sf)',
+  },
+];
+
+const STEPS = [
+  ['Ask for something.', 'Anything. Coffee, a raise, an intro, a discount. The muscle is the same.'],
+  ['Log it in 5 seconds.', 'Type the ask, tap No or Yes. We do the streak math.'],
+  ['Watch the number climb.', 'Daily streaks, milestones from 1 to 1,000, a leaderboard if you want company.'],
+  ['Mark the useful ones.', 'Some rejections come with feedback or new doors. Star those.'],
+];
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-y-auto" style={{ position: 'static' }}>
-      <div className="max-w-2xl mx-auto px-6 py-16 md:py-24">
-        {/* Nav back */}
-        <nav className="mb-16 flex items-center justify-between">
-          <a
-            href="/landing"
-            className="text-secondary text-[10px] font-mono uppercase tracking-[0.15em] hover:text-foreground transition-colors"
-          >
-            Back
-          </a>
-          <div className="flex gap-6">
-            <a href="/manifesto" className="text-secondary text-[10px] font-mono uppercase tracking-[0.15em] hover:text-foreground transition-colors">
-              Manifesto
-            </a>
-            <a href="/leaderboard" className="text-secondary text-[10px] font-mono uppercase tracking-[0.15em] hover:text-foreground transition-colors">
-              Leaderboard
-            </a>
-          </div>
-        </nav>
+    <div className="min-h-screen" style={{ background: 'var(--pp-bg)', padding: '40px 32px 56px' }}>
+      <ScrollPageBodyToggle />
+      <div style={{ maxWidth: 720, margin: '0 auto' }}>
+        <MarketingNav active="about" />
 
-        {/* Header */}
-        <header className="mb-16">
-          <p className="text-secondary text-[10px] font-mono uppercase tracking-[0.2em] mb-4">About</p>
-          <h1 className="font-serif font-light text-4xl md:text-5xl lowercase leading-tight mb-6">
-            the scoreboard for people who ask for things
-          </h1>
-          <p className="font-serif font-light text-lg md:text-xl italic text-secondary leading-relaxed">
-            Every no logged, every attempt counted, every streak tracked.
-          </p>
-        </header>
+        <span className="pp-pill mb-4 inline-flex" style={{ background: 'var(--pp-coral-sf)' }}>
+          <span style={{ width: 8, height: 8, borderRadius: 999, background: 'var(--pp-coral)' }} />
+          About this thing
+        </span>
 
-        {/* Body */}
-        <div className="space-y-12">
-          <section>
-            <h2 className="text-[10px] font-mono uppercase tracking-[0.2em] text-secondary mb-4">What it is</h2>
-            <p className="font-serif font-light text-base leading-relaxed text-foreground/80">
-              Rejection Collection is a personal courage ledger. You log every time you ask
-              for something -- a raise, a meeting, a date, a discount, a favour -- and record
-              whether you heard yes or no. The app tracks your streaks, celebrates milestones,
-              and turns rejection from something you avoid into something you accumulate.
-            </p>
-          </section>
+        <h1 className="font-display mb-4" style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)' }}>
+          We made an app for getting told no.
+        </h1>
+        <p
+          className="mb-10"
+          style={{ fontSize: 18, lineHeight: 1.55, color: 'var(--pp-ink-2)' }}
+        >
+          Most apps help you avoid uncomfortable things. This one is the opposite — it cheers
+          you on every time you do the hard ask. Big or small, you log it and we celebrate it.
+        </p>
 
-          <section>
-            <h2 className="text-[10px] font-mono uppercase tracking-[0.2em] text-secondary mb-4">Who it's for</h2>
-            <div className="space-y-4">
-              <div className="border border-border-light rounded-lg p-4">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-accent mb-2">Founders</p>
-                <p className="font-serif font-light text-base text-foreground/80">
-                  Sending cold emails, pitching investors, asking for introductions.
-                  When you see 112 nos on your counter, the 113th email doesn't feel heavy anymore.
-                </p>
-              </div>
-              <div className="border border-border-light rounded-lg p-4">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-accent mb-2">Job seekers</p>
-                <p className="font-serif font-light text-base text-foreground/80">
-                  Applying in volume, following up, negotiating offers.
-                  Stop catastrophizing individual rejections when you can see the aggregate effort.
-                </p>
-              </div>
-              <div className="border border-border-light rounded-lg p-4">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-accent mb-2">Anyone building courage</p>
-                <p className="font-serif font-light text-base text-foreground/80">
-                  Asking for the table by the window. Returning the shirt that doesn't fit.
-                  Requesting a deadline extension. Small asks compound into a different relationship with fear.
-                </p>
-              </div>
+        <h2 className="font-display text-2xl mb-4">Built for chronic askers</h2>
+        <div className="grid gap-4 mb-12" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+          {PERSONAS.map((p) => (
+            <div key={p.title} className="pp-card" style={{ padding: 18, background: p.bg }}>
+              <div className="mb-2">{p.icon}</div>
+              <div className="font-display text-lg mb-1.5">{p.title}</div>
+              <p className="text-sm" style={{ color: 'var(--pp-ink-2)', lineHeight: 1.55 }}>
+                {p.body}
+              </p>
             </div>
-          </section>
-
-          <section>
-            <h2 className="text-[10px] font-mono uppercase tracking-[0.2em] text-secondary mb-4">How it works</h2>
-            <div className="space-y-3">
-              {[
-                { num: '01', text: 'Ask for something. Anything. Big or small.' },
-                { num: '02', text: 'Open the app. Log what you asked for and whether they said yes or no.' },
-                { num: '03', text: 'Watch your count climb. Build daily streaks. Hit milestones from 1 to 1,000.' },
-                { num: '04', text: 'Mark the useful rejections -- the ones that taught you something or opened a door.' },
-              ].map((step) => (
-                <div key={step.num} className="flex gap-4 items-baseline">
-                  <span className="text-muted font-mono text-[10px]">{step.num}</span>
-                  <p className="font-serif font-light text-base text-foreground/80">{step.text}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-[10px] font-mono uppercase tracking-[0.2em] text-secondary mb-4">The shift</h2>
-            <p className="font-serif font-light text-base leading-relaxed text-foreground/80">
-              You stop being &ldquo;someone who got rejected&rdquo; and become &ldquo;someone at 247
-              attempts.&rdquo; The count reframes the narrative from failure to volume. Most people
-              avoid rejection. You collect it.
-            </p>
-          </section>
+          ))}
         </div>
 
-        {/* CTA */}
-        <div className="mt-16 pt-12 border-t border-border-light text-center">
-          <a
+        <h2 className="font-display text-2xl mb-4">How it works</h2>
+        <div className="flex flex-col gap-3 mb-12">
+          {STEPS.map(([title, body], i) => (
+            <div
+              key={i}
+              className="pp-card flex gap-4 items-start"
+              style={{ padding: 18 }}
+            >
+              <span
+                className="flex items-center justify-center font-display font-bold flex-shrink-0"
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 12,
+                  background: 'var(--pp-sun)',
+                  color: 'var(--pp-ink)',
+                  border: '2px solid var(--pp-ink)',
+                  fontSize: 18,
+                }}
+              >
+                {i + 1}
+              </span>
+              <div>
+                <div className="font-display text-lg mb-1">{title}</div>
+                <p className="text-sm" style={{ color: 'var(--pp-ink-2)', lineHeight: 1.55 }}>
+                  {body}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div
+          className="pp-card"
+          style={{ padding: 28, background: 'var(--pp-ink)', color: 'var(--pp-bg)' }}
+        >
+          <h2 className="font-display text-2xl mb-2" style={{ color: 'var(--pp-bg)' }}>
+            Ready when you are.
+          </h2>
+          <p className="text-base mb-4" style={{ opacity: 0.85, lineHeight: 1.55 }}>
+            Free forever, no card needed. Your first rejection is out there waiting.
+          </p>
+          <Link
             href="/"
-            className="inline-flex items-center min-h-[44px] px-8 border border-border-light rounded-lg font-mono text-[11px] uppercase tracking-[0.15em] text-foreground hover:border-border-active transition-colors"
+            className="pp-btn pp-btn-primary"
+            style={{ padding: '12px 22px' }}
           >
-            Start Collecting
-          </a>
+            Start collecting
+            <ArrowRightIcon size={16} />
+          </Link>
         </div>
       </div>
     </div>

@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '@/lib/store';
+import { QUICK_FILL_SUGGESTIONS } from '@/lib/asks';
+import { ArrowRightIcon } from './Icons';
 
 interface QuickLogProps {
   onClose: () => void;
@@ -14,9 +16,11 @@ export default function QuickLog({ onClose, onLogged }: QuickLogProps) {
   const [ask, setAsk] = useState('');
   const [isYes, setIsYes] = useState<boolean | null>(null);
 
+  const ready = ask.trim().length > 0 && isYes !== null;
+
   function handleSubmit() {
-    if (!ask.trim() || isYes === null) return;
-    logEntry({ ask: ask.trim(), isYes });
+    if (!ready) return;
+    logEntry({ ask: ask.trim(), isYes: !!isYes });
     onLogged(!isYes);
     onClose();
   }
@@ -29,82 +33,132 @@ export default function QuickLog({ onClose, onLogged }: QuickLogProps) {
       transition={{ duration: 0.15 }}
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
     >
-      {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0"
+        style={{
+          background: 'rgba(34,23,51,0.45)',
+          backdropFilter: 'blur(4px)',
+          WebkitBackdropFilter: 'blur(4px)',
+        }}
         onClick={onClose}
       />
 
-      {/* Modal */}
       <motion.div
         initial={{ y: '100%' }}
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-        className="relative w-full max-w-md bg-surface border-t border-border-light rounded-t-2xl sm:rounded-2xl sm:border p-6 pb-8 z-10"
+        className="relative w-full max-w-md z-10"
+        style={{
+          background: 'var(--pp-card)',
+          borderRadius: 22,
+          border: '2px solid var(--pp-ink)',
+          boxShadow: 'var(--pp-shadow-lg)',
+          margin: '0 8px 8px',
+          padding: '20px 18px 22px',
+        }}
       >
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-3.5">
           <button
             onClick={onClose}
-            className="text-secondary hover:text-foreground transition-colors text-[10px] font-mono uppercase tracking-widest cursor-pointer min-h-[44px] flex items-center"
+            className="pp-btn pp-btn-ghost"
+            style={{ padding: '4px 10px', fontSize: 12, minHeight: 0 }}
           >
-            Cancel
+            ← Cancel
           </button>
-          <div className="w-12" />
+          <span className="text-xs font-bold" style={{ color: 'var(--pp-ink-3)' }}>
+            New entry
+          </span>
+          <span style={{ width: 64 }} />
         </div>
 
-        <h2 className="text-foreground font-serif font-light text-2xl mb-1">
-          What did you ask for?
-        </h2>
-        <p className="text-secondary text-[10px] font-mono uppercase tracking-widest mb-5">
-          Keep it short.
+        <h2 className="font-display text-xl mb-1">What did you ask for?</h2>
+        <p className="text-sm mb-3" style={{ color: 'var(--pp-ink-3)' }}>
+          Keep it short. Past tense.
         </p>
 
         <input
           type="text"
           value={ask}
           onChange={(e) => setAsk(e.target.value)}
-          placeholder="e.g. Asked for the meeting, pitched the idea"
-          className="w-full bg-surface-elevated border border-border-light rounded-lg px-4 py-3 text-foreground text-sm font-mono placeholder:text-muted
-            focus:outline-none focus:border-border-active transition-colors mb-5"
+          placeholder="e.g. Asked for a raise, sent a cold pitch"
           autoFocus
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && ask.trim() && isYes !== null) handleSubmit();
+            if (e.key === 'Enter' && ready) handleSubmit();
+          }}
+          className="w-full px-3.5 py-3 text-base font-semibold outline-none mb-3"
+          style={{
+            border: '2px solid var(--pp-ink)',
+            borderRadius: 12,
+            background: 'var(--pp-card-2)',
+            color: 'var(--pp-ink)',
+            boxShadow: 'var(--pp-shadow-sm)',
           }}
         />
 
-        {/* Result buttons */}
-        <div className="flex gap-3 mb-6">
+        {ask.trim().length === 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            <span className="text-xs font-bold w-full" style={{ color: 'var(--pp-ink-3)' }}>
+              QUICK FILLS
+            </span>
+            {QUICK_FILL_SUGGESTIONS.map((t) => (
+              <button
+                key={t}
+                onClick={() => setAsk(t)}
+                className="pp-pill cursor-pointer"
+                style={{ background: 'var(--pp-card-2)', fontSize: 11 }}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className="text-xs font-bold mb-2" style={{ color: 'var(--pp-ink-3)' }}>
+          HOW DID IT GO?
+        </div>
+        <div className="flex gap-2.5 mb-3.5">
           <button
             onClick={() => setIsYes(false)}
-            className={`flex-1 py-4 rounded-lg text-sm font-mono uppercase tracking-wider transition-all duration-200 cursor-pointer min-h-[52px] ${
-              isYes === false
-                ? 'bg-accent/15 border border-accent/40 text-accent'
-                : 'border border-border-light text-secondary hover:border-border-active hover:text-foreground'
-            }`}
+            className="pp-btn flex-1"
+            style={{
+              padding: '14px 0',
+              fontSize: 15,
+              background: isYes === false ? 'var(--pp-coral)' : 'var(--pp-coral-sf)',
+              color: isYes === false ? '#fff' : 'var(--pp-ink)',
+            }}
           >
-            No
+            <span style={{ fontSize: 17 }}>✕</span> Got a No
           </button>
           <button
             onClick={() => setIsYes(true)}
-            className={`flex-1 py-4 rounded-lg text-sm font-mono uppercase tracking-wider transition-all duration-200 cursor-pointer min-h-[52px] ${
-              isYes === true
-                ? 'bg-success/15 border border-success/40 text-success'
-                : 'border border-border-light text-secondary hover:border-border-active hover:text-foreground'
-            }`}
+            className="pp-btn flex-1"
+            style={{
+              padding: '14px 0',
+              fontSize: 15,
+              background: isYes === true ? 'var(--pp-mint)' : 'var(--pp-mint-sf)',
+              color: isYes === true ? '#fff' : 'var(--pp-ink)',
+            }}
           >
-            Yes
+            <span style={{ fontSize: 17 }}>✓</span> Got a Yes
           </button>
+        </div>
+
+        <div className="pp-tip mb-3.5">
+          <span className="pp-tip-icon">i</span>
+          <div>
+            No response after a week? <b>Counts as a no.</b> Don&rsquo;t let your brain rewrite it.
+          </div>
         </div>
 
         <button
           onClick={handleSubmit}
-          disabled={!ask.trim() || isYes === null}
-          className="w-full py-3.5 rounded-lg border border-border-light text-foreground font-mono text-[11px] uppercase tracking-[0.15em]
-            hover:border-border-active active:scale-[0.98] transition-all duration-200 cursor-pointer
-            disabled:opacity-30 disabled:cursor-not-allowed"
+          disabled={!ready}
+          className="pp-btn pp-btn-primary w-full"
+          style={{ padding: '14px 0', fontSize: 15 }}
         >
           Log it
+          <ArrowRightIcon size={16} />
         </button>
       </motion.div>
     </motion.div>
