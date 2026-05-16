@@ -1,29 +1,29 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRightIcon, CheckIcon } from './Icons';
 import FoundingCounter from './FoundingCounter';
 
-const COLLECTOR = [
+const CORE = [
   'Unlimited rejection logs',
-  'Streaks and year goal',
-  'All nine milestones',
+  'Streaks and yearly goal',
   'Leaderboard',
-  '53-week contribution heatmap',
+  '52-week contribution heatmap',
 ];
 
 const FOUNDING_EXTRAS = [
-  'The full paid tier (Committed) — free forever',
-  'Small founder community (Discord)',
+  'Everything in the core app',
+  'Future paid tier included free forever',
+  'Small founder community chat',
   'Founding-member badge on the leaderboard',
-  'Your name on the supporters page',
 ];
 
 const COMMITTED = [
-  'Notes per entry — what you asked, what they said, what you learned',
-  'Weekly digest email with last week’s roundup',
-  'Year-in-review card — shareable end-of-year recap',
-  'Public profile page at a clean URL',
-  'Ask idea library — 100 categorised prompts',
-  'Phrase templates — raise, intro, refund, cold email, follow-up',
+  'Weekly digest email',
+  'Year-in-review card',
+  'Public profile page',
+  'Phrase templates for raises, intros, refunds, cold emails, and follow-ups',
 ];
 
 interface Props {
@@ -33,6 +33,8 @@ interface Props {
 export default function Pricing({ variant = 'section' }: Props) {
   const padClass =
     variant === 'page' ? 'px-5 md:px-8 pt-8 pb-12 md:pt-10 md:pb-14' : 'px-5 md:px-8 py-12 md:py-16';
+
+  const [period, setPeriod] = useState<'mo' | 'yr'>('yr');
 
   return (
     <section className={padClass}>
@@ -71,13 +73,13 @@ export default function Pricing({ variant = 'section' }: Props) {
             alignItems: 'stretch',
           }}
         >
-          {/* COLLECTOR */}
+          {/* CORE APP */}
           <Card
-            title="Collector"
+            title="Core app"
             price="Free"
-            priceSub="forever"
-            body="The complete habit loop. No card. No paywall on the core."
-            features={COLLECTOR}
+            priceSub="forever · no card · no paywall on the habit loop"
+            body="Track your asks. Log the rejections. Build the streak. Reach the milestones."
+            features={CORE}
             cta="Start collecting"
             ctaHref="/"
             ctaStyle="default"
@@ -88,8 +90,8 @@ export default function Pricing({ variant = 'section' }: Props) {
             title="Founding Member"
             price="Free"
             priceSub={<FoundingCounter variant="inline" />}
-            body="The whole app free forever, plus a small founder community shaping what comes next."
-            features={[...COLLECTOR, ...FOUNDING_EXTRAS]}
+            body="For the first people who want to shape what this becomes. You get the whole app free forever, plus founder perks."
+            features={FOUNDING_EXTRAS}
             cta="Claim your spot"
             ctaHref="/"
             highlighted
@@ -104,16 +106,23 @@ export default function Pricing({ variant = 'section' }: Props) {
           {/* COMMITTED */}
           <Card
             title="Committed"
-            price="$5"
+            price={period === 'mo' ? '$5' : '$35'}
             priceSub={
-              <span>
-                /mo · or <b>$35/yr</b> <span style={{ opacity: 0.7 }}>(save $25)</span>
-              </span>
+              <div className="flex flex-col gap-2.5">
+                <PeriodToggle period={period} onChange={setPeriod} />
+                <span>
+                  {period === 'mo' ? (
+                    <>per month · or <b>$35/year</b> <span style={{ opacity: 0.7 }}>(save $25)</span></>
+                  ) : (
+                    <>per year · <span style={{ opacity: 0.7 }}>$2.92/mo equivalent · save $25 vs monthly</span></>
+                  )}
+                </span>
+              </div>
             }
-            body="Launches when the 50 founders are seated. Built from what founders ask for first."
+            body="Launches after the 50 founding spots are gone. For people who want more reflection, prompts, and accountability."
             features={COMMITTED}
-            cta="See what’s coming"
-            ctaHref="/manifesto"
+            cta="Support us from day one"
+            ctaHref="/"
             ctaStyle="ghost"
             bg="var(--pp-card-2)"
           />
@@ -123,12 +132,55 @@ export default function Pricing({ variant = 'section' }: Props) {
           <span className="pp-tip-icon">!</span>
           <div>
             <b>Why founding members are free:</b> the first 50 people shape what gets built.
-            Founders get a small Discord, early access to paid features as they ship, and a
-            permanent free pass to Committed.
+            Founders get a small community chat, early access to paid features as they ship, and
+            a permanent free pass to Committed.
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function PeriodToggle({
+  period,
+  onChange,
+}: {
+  period: 'mo' | 'yr';
+  onChange: (p: 'mo' | 'yr') => void;
+}) {
+  return (
+    <div
+      className="inline-flex p-1 self-start"
+      style={{
+        border: '1.5px solid var(--pp-ink)',
+        borderRadius: 999,
+        background: 'var(--pp-card)',
+      }}
+    >
+      {(['mo', 'yr'] as const).map((p) => {
+        const active = period === p;
+        return (
+          <button
+            key={p}
+            type="button"
+            onClick={() => onChange(p)}
+            className="cursor-pointer"
+            style={{
+              padding: '4px 12px',
+              borderRadius: 999,
+              fontSize: 11,
+              fontWeight: 700,
+              background: active ? 'var(--pp-ink)' : 'transparent',
+              color: active ? 'var(--pp-bg)' : 'var(--pp-ink-2)',
+              border: 'none',
+              minHeight: 0,
+            }}
+          >
+            {p === 'mo' ? 'Monthly' : 'Yearly'}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
