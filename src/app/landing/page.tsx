@@ -39,15 +39,15 @@ const FAQ = [
   ],
   [
     'Is it free?',
-    'The Collector tier is free forever — unlimited logs, streaks, milestones, leaderboard, heatmap. No card required to sign up. The Committed tier ($5/mo or $35/yr) launches once the 50 founding members are seated. Founders get Committed free for life.',
+    'The Core app is free forever — unlimited logs, streaks, milestones, leaderboard, heatmap. The paid tier ($5/mo or $35/year) launches after the first 50 founding members are seated. Those 50 founders stay free for life.',
   ],
   [
     'What’s a founding member?',
-    'The first 50 people to sign up. Founders get the full app free forever (including the paid Committed tier when it launches), access to a small Discord, a founder badge on the leaderboard, and a name on the supporters page. Why so few: 50 founders is small enough to actually listen to.',
+    'One of the first 50 people to sign up. Founders get the paid tier free forever, a permanent badge on the leaderboard, and access to the founding group chat — where we decide what to build next based on what you ask for.',
   ],
   [
-    'When does the Committed tier launch?',
-    'Once the 50 founders are seated. We’re building paid features — notes per entry, weekly digest, year-in-review, ask library, phrase templates — in the order founders ask for them.',
+    'When does the paid tier launch?',
+    'When the 50 founders are seated. We’re building features — weekly digest, year-in-review, public profile, phrase templates — in the order founders ask for them.',
   ],
   [
     'Is my data private?',

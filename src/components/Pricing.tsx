@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRightIcon, CheckIcon } from './Icons';
 import FoundingCounter from './FoundingCounter';
@@ -12,18 +11,13 @@ const CORE = [
   '52-week contribution heatmap',
 ];
 
-const FOUNDING_EXTRAS = [
-  'Everything in the core app',
-  'Future paid tier included free forever',
-  'Small founder community chat',
-  'Founding-member badge on the leaderboard',
-];
-
-const COMMITTED = [
+const FOUNDING = [
   'Weekly digest email',
   'Year-in-review card',
   'Public profile page',
   'Phrase templates for raises, intros, refunds, cold emails, and follow-ups',
+  'Founding-member badge + access to the founding group chat',
+  'Free for life — even after the paid pricing kicks in',
 ];
 
 interface Props {
@@ -34,11 +28,9 @@ export default function Pricing({ variant = 'section' }: Props) {
   const padClass =
     variant === 'page' ? 'px-5 md:px-8 pt-8 pb-12 md:pt-10 md:pb-14' : 'px-5 md:px-8 py-12 md:py-16';
 
-  const [period, setPeriod] = useState<'mo' | 'yr'>('yr');
-
   return (
     <section className={padClass}>
-      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+      <div style={{ maxWidth: 980, margin: '0 auto' }}>
         <span
           className="pp-pill mb-4 inline-flex"
           style={{ background: 'var(--pp-coral-sf)' }}
@@ -51,7 +43,7 @@ export default function Pricing({ variant = 'section' }: Props) {
           className="font-display mb-3"
           style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
         >
-          Three ways to start.
+          Two ways to start.
         </h2>
         <p
           className="mb-10"
@@ -85,14 +77,21 @@ export default function Pricing({ variant = 'section' }: Props) {
             ctaStyle="default"
           />
 
-          {/* FOUNDING MEMBER */}
+          {/* FOUNDING MEMBER (formerly two tiers — merged) */}
           <Card
             title="Founding Member"
             price="Free"
-            priceSub={<FoundingCounter variant="inline" />}
-            body="For the first people who want to shape what this becomes. You get the whole app free forever, plus founder perks."
-            features={FOUNDING_EXTRAS}
-            cta="Claim your spot"
+            priceSub={
+              <div className="flex flex-col gap-1.5">
+                <FoundingCounter variant="inline" />
+                <span style={{ opacity: 0.85 }}>
+                  for the first 50 · then <b>$5/mo or $35/year</b>
+                </span>
+              </div>
+            }
+            body="The first 50 people to sign up get the paid tier free for life and join the founding group — a small chat where we decide what to build next based on what you ask for."
+            features={FOUNDING}
+            cta="Claim your founding spot"
             ctaHref="/"
             highlighted
             stickerLabel="50 spots only"
@@ -102,85 +101,19 @@ export default function Pricing({ variant = 'section' }: Props) {
             featureCheckBg="var(--pp-sun)"
             badge={<FoundingCounter variant="badge" />}
           />
-
-          {/* COMMITTED */}
-          <Card
-            title="Committed"
-            price={period === 'mo' ? '$5' : '$35'}
-            priceSub={
-              <div className="flex flex-col gap-2.5">
-                <PeriodToggle period={period} onChange={setPeriod} />
-                <span>
-                  {period === 'mo' ? (
-                    <>per month · or <b>$35/year</b> <span style={{ opacity: 0.7 }}>(save $25)</span></>
-                  ) : (
-                    <>per year · <span style={{ opacity: 0.7 }}>$2.92/mo equivalent · save $25 vs monthly</span></>
-                  )}
-                </span>
-              </div>
-            }
-            body="Launches after the 50 founding spots are gone. For people who want more reflection, prompts, and accountability."
-            features={COMMITTED}
-            cta="Support us from day one"
-            ctaHref="/"
-            ctaStyle="ghost"
-            bg="var(--pp-card-2)"
-          />
         </div>
 
         <div className="pp-tip mt-8">
           <span className="pp-tip-icon">!</span>
           <div>
-            <b>Why founding members are free:</b> the first 50 people shape what gets built.
-            Founders get a small community chat, early access to paid features as they ship, and
-            a permanent free pass to Committed.
+            <b>Why 50:</b> small enough to actually listen to. Founders shape what gets built —
+            digest, year-in-review, public profile, phrase templates — in the order you ask for
+            them. After the 50 are seated, the paid tier launches at $5/mo or $35/year. Founders
+            stay free for life.
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function PeriodToggle({
-  period,
-  onChange,
-}: {
-  period: 'mo' | 'yr';
-  onChange: (p: 'mo' | 'yr') => void;
-}) {
-  return (
-    <div
-      className="inline-flex p-1 self-start"
-      style={{
-        border: '1.5px solid var(--pp-ink)',
-        borderRadius: 999,
-        background: 'var(--pp-card)',
-      }}
-    >
-      {(['mo', 'yr'] as const).map((p) => {
-        const active = period === p;
-        return (
-          <button
-            key={p}
-            type="button"
-            onClick={() => onChange(p)}
-            className="cursor-pointer"
-            style={{
-              padding: '4px 12px',
-              borderRadius: 999,
-              fontSize: 11,
-              fontWeight: 700,
-              background: active ? 'var(--pp-ink)' : 'transparent',
-              color: active ? 'var(--pp-bg)' : 'var(--pp-ink-2)',
-              border: 'none',
-              minHeight: 0,
-            }}
-          >
-            {p === 'mo' ? 'Monthly' : 'Yearly'}
-          </button>
-        );
-      })}
-    </div>
   );
 }
 
