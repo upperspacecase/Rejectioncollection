@@ -4,7 +4,7 @@ import Pricing from '@/components/Pricing';
 import ScrollPageBodyToggle from '@/components/ScrollBodyToggle';
 
 export const metadata: Metadata = {
-  title: 'Pricing — Rejection Collection',
+  title: 'Pricing — Brazen',
   description:
     'Free forever for the first 50 founding members. $5/mo or $35/yr after.',
 };

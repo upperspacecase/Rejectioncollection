@@ -5,7 +5,7 @@ import ScrollPageBodyToggle from '@/components/ScrollBodyToggle';
 import { ArrowRightIcon, TrophyIcon } from '@/components/Icons';
 
 export const metadata: Metadata = {
-  title: 'Leaderboard — Rejection Collection',
+  title: 'Leaderboard — Brazen',
   description: 'The only scoreboard where more nos mean you’re winning.',
 };
 

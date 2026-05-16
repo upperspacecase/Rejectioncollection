@@ -5,7 +5,7 @@ import { ArrowRightIcon, TargetIcon, BriefcaseIcon, SparkleIcon } from '@/compon
 import ScrollPageBodyToggle from '@/components/ScrollBodyToggle';
 
 export const metadata: Metadata = {
-  title: 'About — Rejection Collection',
+  title: 'About — Brazen',
   description: 'The friendliest way to build rejection muscle.',
 };
 

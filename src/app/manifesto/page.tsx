@@ -5,7 +5,7 @@ import ScrollPageBodyToggle from '@/components/ScrollBodyToggle';
 import { ArrowRightIcon } from '@/components/Icons';
 
 export const metadata: Metadata = {
-  title: 'Manifesto — Rejection Collection',
+  title: 'Manifesto — Brazen',
   description: 'Why we collect rejection.',
 };
 

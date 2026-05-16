@@ -269,18 +269,30 @@ export function LogoMark({ size = 36 }: { size?: number }) {
       style={{
         width: size,
         height: size,
-        borderRadius: 12,
-        background: 'var(--pp-mint)',
+        borderRadius: Math.max(8, Math.round(size * 0.27)),
+        background: 'var(--pp-coral)',
         border: '2px solid var(--pp-ink)',
         boxShadow: 'var(--pp-shadow)',
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transform: 'rotate(-4deg)',
+        flexShrink: 0,
       }}
     >
-      <svg width={size * 0.55} height={size * 0.55} viewBox="0 0 20 20" fill="none">
-        <path d="M5 5 L15 15 M15 5 L5 15" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
+      <svg
+        width={size * 0.62}
+        height={size * 0.62}
+        viewBox="0 0 32 32"
+        fill="none"
+      >
+        <path
+          d="M20 5 L8 18 L14 18 L12 27 L24 14 L18 14 Z"
+          fill="var(--pp-sun)"
+          stroke="var(--pp-ink)"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
       </svg>
     </span>
   );

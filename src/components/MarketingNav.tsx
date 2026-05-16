@@ -35,8 +35,8 @@ export default function MarketingNav({ active, hero }: { active: Active; hero?: 
           onClick={() => setOpen(false)}
         >
           <LogoMark size={36} />
-          <span className="font-display text-lg md:text-xl font-bold truncate">
-            Rejection Collection
+          <span className="brazen-wordmark text-2xl md:text-3xl truncate">
+            Brazen
           </span>
         </Link>
 
@@ -94,8 +94,8 @@ export default function MarketingNav({ active, hero }: { active: Active; hero?: 
         onClick={() => setOpen(false)}
       >
         <LogoMark size={32} />
-        <span className="font-display text-base md:text-lg font-bold truncate">
-          Rejection Collection
+        <span className="brazen-wordmark text-xl md:text-2xl truncate">
+          Brazen
         </span>
       </Link>
 

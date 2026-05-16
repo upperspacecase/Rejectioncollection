@@ -11,10 +11,10 @@ interface MilestoneModalProps {
 
 export default function MilestoneModal({ milestone, onClose }: MilestoneModalProps) {
   async function handleShare() {
-    const text = `Just hit ${milestone.count.toLocaleString()} rejections collected on Rejection Collection. ${milestone.title}.`;
+    const text = `${milestone.count.toLocaleString()} rejections logged on Brazen. ${milestone.title}.`;
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
-        await navigator.share({ title: 'Rejection Collection', text });
+        await navigator.share({ title: 'Brazen', text });
         return;
       } catch {
         // fall through to clipboard

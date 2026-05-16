@@ -1,10 +1,31 @@
 {
-  "name": "Rejection Collection",
-  "short_name": "Rejections",
-  "description": "Turn every 'no' into proof you tried.",
+  "name": "Brazen",
+  "short_name": "Brazen",
+  "description": "The scoreboard for people who ask for things. Log your rejections, build a streak, stop flinching when the answer is no.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0A0A0A",
-  "theme_color": "#0A0A0A",
-  "icons": []
+  "orientation": "portrait",
+  "background_color": "#FFF1E0",
+  "theme_color": "#FFF1E0",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
 }
