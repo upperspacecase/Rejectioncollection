@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ArrowRightIcon, CheckIcon } from './Icons';
+import FoundingCounter from './FoundingCounter';
 
 const COLLECTOR = [
   'Unlimited rejection logs',
@@ -85,7 +86,7 @@ export default function Pricing({ variant = 'section' }: Props) {
           <Card
             title="Founding Member"
             price="Free"
-            priceSub="for the first 50"
+            priceSub={<FoundingCounter variant="inline" />}
             body="The whole app free forever, plus a small founder community shaping what comes next."
             features={[...COLLECTOR, ...FOUNDING_EXTRAS]}
             cta="Claim your spot"
@@ -96,6 +97,7 @@ export default function Pricing({ variant = 'section' }: Props) {
             bg="var(--pp-coral)"
             ink="#fff"
             featureCheckBg="var(--pp-sun)"
+            badge={<FoundingCounter variant="badge" />}
           />
 
           {/* COMMITTED */}
@@ -143,6 +145,7 @@ interface CardProps {
   bg?: string;
   ink?: string;
   featureCheckBg?: string;
+  badge?: React.ReactNode;
 }
 
 function Card({
@@ -159,6 +162,7 @@ function Card({
   bg,
   ink,
   featureCheckBg,
+  badge,
 }: CardProps) {
   const textColor = ink ?? 'var(--pp-ink)';
   const cardBg = bg ?? 'var(--pp-card)';
@@ -195,6 +199,8 @@ function Card({
       >
         {title}
       </div>
+
+      {badge}
 
       <div className="flex items-baseline gap-1.5 mb-1.5">
         <span className="pp-num" style={{ fontSize: 44 }}>

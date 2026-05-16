@@ -12,6 +12,30 @@ interface LeaderboardRow {
   name: string;
   rejectionCount: number;
   streak: number;
+  foundingMemberNumber?: number;
+}
+
+function FounderBadge({ inverted }: { inverted?: boolean }) {
+  return (
+    <span
+      title="Founding member"
+      className="inline-flex items-center justify-center"
+      style={{
+        width: 14,
+        height: 14,
+        borderRadius: 999,
+        background: inverted ? 'rgba(255,255,255,0.25)' : 'var(--pp-coral)',
+        border: `1.5px solid ${inverted ? 'rgba(255,255,255,0.5)' : 'var(--pp-ink)'}`,
+        color: inverted ? '#fff' : '#fff',
+        fontFamily: "'Bricolage Grotesque', Georgia, serif",
+        fontWeight: 800,
+        fontSize: 8,
+        lineHeight: 1,
+      }}
+    >
+      F
+    </span>
+  );
 }
 
 export default function Leaderboard() {
@@ -85,7 +109,8 @@ export default function Leaderboard() {
                   <div className="pp-num" style={{ fontSize: 22 }}>
                     {t.rejectionCount.toLocaleString()}
                   </div>
-                  <div className="text-xs font-bold mt-0.5 truncate">
+                  <div className="text-xs font-bold mt-0.5 truncate flex items-center justify-center gap-1">
+                    {t.foundingMemberNumber !== undefined && <FounderBadge />}
                     {t.uid === user?.uid ? `${t.name} (you)` : t.name}
                   </div>
                   {t.streak > 0 && (
@@ -124,7 +149,10 @@ export default function Leaderboard() {
                   >
                     {i + 4}
                   </span>
-                  <span className="flex-1 font-semibold text-sm truncate">
+                  <span className="flex-1 font-semibold text-sm truncate inline-flex items-center gap-1.5">
+                    {row.foundingMemberNumber !== undefined && (
+                      <FounderBadge inverted={isMe} />
+                    )}
                     {isMe ? `${row.name} (you)` : row.name}
                   </span>
                   {row.streak > 0 && (

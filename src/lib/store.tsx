@@ -21,6 +21,7 @@ import { AppState, Rejection, UserProfile } from './types';
 import { generateId, getRejections, getStreak } from './utils';
 import { useAuth } from './auth';
 import { db } from './firebase';
+import { claimFoundingMemberIfEligible } from './founders';
 
 const STORAGE_KEY = 'rejection-collection-data';
 
@@ -44,6 +45,7 @@ type Action =
   | { type: 'COMPLETE_ONBOARDING'; payload: { name: string } }
   | { type: 'UPDATE_GOAL'; payload: number }
   | { type: 'UPDATE_NAME'; payload: string }
+  | { type: 'SET_FOUNDING_NUMBER'; payload: number }
   | { type: 'SYNC_ENTRIES'; payload: Rejection[] };
 
 function reducer(state: AppState, action: Action): AppState {
@@ -91,6 +93,12 @@ function reducer(state: AppState, action: Action): AppState {
         profile: { ...state.profile, name: action.payload },
       };
 
+    case 'SET_FOUNDING_NUMBER':
+      return {
+        ...state,
+        profile: { ...state.profile, foundingMemberNumber: action.payload },
+      };
+
     case 'SYNC_ENTRIES':
       return {
         ...state,
@@ -125,9 +133,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     if (user) {
       // Load profile from Firestore
       const userDocRef = doc(db, 'users', user.uid);
-      getDoc(userDocRef).then((snap) => {
+      getDoc(userDocRef).then(async (snap) => {
+        let loadedProfile: UserProfile | null = null;
         if (snap.exists()) {
           const profile = snap.data() as UserProfile;
+          loadedProfile = profile;
           dispatch({ type: 'LOAD_STATE', payload: { profile, entries: state.entries } });
         } else {
           // Migrate localStorage data if exists
@@ -144,6 +154,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
                   batch.set(doc(entriesRef, entry.id), entry);
                 });
                 batch.commit();
+                loadedProfile = parsed.profile;
                 dispatch({ type: 'LOAD_STATE', payload: parsed });
               }
             }
@@ -152,6 +163,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           }
         }
         setIsLoaded(true);
+
+        // Claim the next founding-member slot if eligible (race-safe transaction)
+        if (loadedProfile && loadedProfile.onboardingComplete) {
+          const claimed = await claimFoundingMemberIfEligible(
+            user.uid,
+            loadedProfile.foundingMemberNumber
+          );
+          if (claimed && claimed !== loadedProfile.foundingMemberNumber) {
+            dispatch({ type: 'SET_FOUNDING_NUMBER', payload: claimed });
+          }
+        }
       });
 
       // Subscribe to entries
@@ -197,12 +219,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const rejections = getRejections(state.entries).length;
     const streak = getStreak(state.entries);
     const leaderboardRef = doc(db, 'leaderboard', user.uid);
-    setDoc(leaderboardRef, {
+    const payload: Record<string, string | number> = {
       name: state.profile.name || 'Anonymous',
       rejectionCount: rejections,
       streak,
       updatedAt: Date.now(),
-    }).catch(() => {});
+    };
+    if (state.profile.foundingMemberNumber !== undefined) {
+      payload.foundingMemberNumber = state.profile.foundingMemberNumber;
+    }
+    setDoc(leaderboardRef, payload).catch(() => {});
   }, [user, isLoaded, state.entries, state.profile]);
 
   const logEntry = useCallback(
@@ -263,7 +289,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           name,
           yearlyGoal: 1000,
           joinDate: Date.now(),
-        }).catch(() => {});
+        })
+          .then(() => claimFoundingMemberIfEligible(user.uid, undefined))
+          .then((claimed) => {
+            if (claimed) dispatch({ type: 'SET_FOUNDING_NUMBER', payload: claimed });
+          })
+          .catch(() => {});
       }
     },
     [user]

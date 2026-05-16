@@ -75,12 +75,31 @@ export default function MeTab() {
                 }}
               />
             ) : (
-              <div className="font-display text-xl truncate">
-                {state.profile.name || 'Anonymous'}
+              <div className="flex items-center gap-2">
+                <div className="font-display text-xl truncate">
+                  {state.profile.name || 'Anonymous'}
+                </div>
+                {state.profile.foundingMemberNumber !== undefined && (
+                  <span
+                    className="pp-pill"
+                    title="Founding member"
+                    style={{
+                      background: 'var(--pp-coral)',
+                      color: '#fff',
+                      fontSize: 10,
+                      padding: '3px 8px',
+                      borderColor: 'var(--pp-ink)',
+                    }}
+                  >
+                    #{state.profile.foundingMemberNumber} / 50
+                  </span>
+                )}
               </div>
             )}
             <div className="text-xs font-semibold mt-1" style={{ color: 'var(--pp-ink-3)' }}>
-              Collecting since {joined}
+              {state.profile.foundingMemberNumber !== undefined
+                ? `Founding member · joined ${joined}`
+                : `Collecting since ${joined}`}
             </div>
           </div>
           {editing ? (
