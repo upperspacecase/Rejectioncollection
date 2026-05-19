@@ -4,7 +4,7 @@ import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyC364jP4wTONafmLhkdilCJl82Fzi9wtV0",
-  authDomain: "rejectioncollection.vercel.app",
+  authDomain: "www.brazen.click",
   projectId: "rejection-collection",
   storageBucket: "rejection-collection.firebasestorage.app",
   messagingSenderId: "632798225412",
