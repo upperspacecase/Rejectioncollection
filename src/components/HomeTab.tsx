@@ -8,13 +8,13 @@ import {
   getYeses,
   getStreak,
   getYearlyRejections,
-  getPaceProjection,
   formatRelativeTime,
 } from '@/lib/utils';
 import { MILESTONES } from '@/lib/milestones';
 import { getAskOfTheDay, getDayName, getGreetingPeriod } from '@/lib/asks';
 import { Rejection } from '@/lib/types';
-import { FlameIcon, StarIcon } from './Icons';
+import { FlameIcon, StarIcon, CheckIcon } from './Icons';
+import LastThirtyDaysStrip from './LastThirtyDaysStrip';
 
 export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
   const { state } = useStore();
@@ -25,7 +25,6 @@ export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
   const total = entries.length;
   const streak = getStreak(entries);
   const yearlyCount = getYearlyRejections(entries);
-  const projection = getPaceProjection(yearlyCount, profile.joinDate, profile.yearlyGoal);
   const goalProgress = Math.min(1, yearlyCount / profile.yearlyGoal);
 
   const nextMilestone = useMemo(() => {
@@ -39,14 +38,18 @@ export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
   const initial = (profile.name || 'A').trim().charAt(0).toUpperCase() || 'A';
   const firstName = (profile.name || '').split(' ')[0] || profile.name || 'collector';
 
-  const todayCount = useMemo(() => {
+  const todayAsks = useMemo(() => {
     const today = new Date();
     const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-    return getRejections(entries).filter((e) => {
+    return entries.filter((e) => {
       const d = new Date(e.timestamp);
       return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}` === todayKey;
     }).length;
   }, [entries]);
+
+  const dailyGoal = 3;
+  const slotsFilled = Math.min(todayAsks, dailyGoal);
+  const extra = Math.max(0, todayAsks - dailyGoal);
 
   return (
     <div className="h-full flex flex-col px-5 pt-4 pb-2 overflow-y-auto">
@@ -84,23 +87,59 @@ export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
           className="text-xs font-bold uppercase tracking-wider"
           style={{ opacity: 0.85 }}
         >
-          Nos collected
+          Asks collected
         </div>
         <div className="pp-num" style={{ fontSize: 64, marginTop: 6 }}>
-          {rejections.toLocaleString()}
+          {total.toLocaleString()}
         </div>
-        <div className="text-sm mt-2" style={{ opacity: 0.9 }}>
-          {todayCount > 0 ? (
-            <>
-              +{todayCount} today
-              {projection && yearlyCount > 0 && ` — pace says ${projection}`}
-            </>
-          ) : rejections === 0 ? (
-            'Your first rejection is out there.'
-          ) : (
-            'No log today yet. The arena is still open.'
-          )}
+
+        {/* Daily slots — refresh each day, fill as you ask */}
+        <div className="mt-3">
+          <div
+            className="text-[11px] font-bold uppercase tracking-wider mb-1.5"
+            style={{ opacity: 0.85 }}
+          >
+            Today
+          </div>
+          <div className="flex items-center gap-2">
+            {Array.from({ length: dailyGoal }).map((_, i) => {
+              const filled = i < slotsFilled;
+              return (
+                <div
+                  key={i}
+                  className="flex items-center justify-center"
+                  style={{
+                    flex: 1,
+                    height: 26,
+                    borderRadius: 8,
+                    border: '2px solid #fff',
+                    background: filled ? '#fff' : 'transparent',
+                    color: 'var(--pp-coral)',
+                    transition: 'background 200ms ease',
+                  }}
+                >
+                  {filled && <CheckIcon size={14} strokeWidth={3} />}
+                </div>
+              );
+            })}
+            {extra > 0 && (
+              <span
+                className="text-xs font-bold"
+                style={{ opacity: 0.95, paddingLeft: 4 }}
+              >
+                +{extra}
+              </span>
+            )}
+          </div>
+          <div className="text-xs mt-1.5" style={{ opacity: 0.9 }}>
+            {todayAsks === 0
+              ? 'Three asks today. Get the first one.'
+              : slotsFilled < dailyGoal
+                ? `${dailyGoal - slotsFilled} to go.`
+                : 'Day done. Anything extra is gravy.'}
+          </div>
         </div>
+
         {streak > 0 && (
           <div
             className="pp-sticker absolute"
@@ -116,6 +155,11 @@ export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
             {streak}-day streak
           </div>
         )}
+      </div>
+
+      {/* Last 30 days activity */}
+      <div className="mb-3">
+        <LastThirtyDaysStrip />
       </div>
 
       {/* Stat row */}
