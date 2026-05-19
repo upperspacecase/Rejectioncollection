@@ -122,7 +122,7 @@ export default function AboutPage() {
             Free forever, no card needed. Your first rejection is out there waiting.
           </p>
           <Link
-            href="/"
+            href="/app"
             className="pp-btn pp-btn-primary"
             style={{ padding: '12px 22px' }}
           >

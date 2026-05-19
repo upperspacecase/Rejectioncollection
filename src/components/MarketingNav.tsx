@@ -29,7 +29,7 @@ export default function MarketingNav({ active, hero }: { active: Active; hero?: 
     return (
       <header className="relative flex justify-between items-center px-5 py-4 md:px-8 md:py-5">
         <Link
-          href="/landing"
+          href="/"
           className="inline-flex items-center gap-2.5 min-w-0"
           style={{ textDecoration: 'none', color: 'var(--pp-ink)' }}
           onClick={() => setOpen(false)}
@@ -53,14 +53,14 @@ export default function MarketingNav({ active, hero }: { active: Active; hero?: 
             </Link>
           ))}
           <Link
-            href="/"
+            href="/app"
             className="pp-btn pp-btn-ghost"
             style={{ padding: '8px 14px', fontSize: 13, minHeight: 0 }}
           >
             Sign in
           </Link>
           <Link
-            href="/"
+            href="/app"
             className="pp-btn pp-btn-primary"
             style={{ padding: '10px 16px', fontSize: 13, minHeight: 0 }}
           >
@@ -71,7 +71,7 @@ export default function MarketingNav({ active, hero }: { active: Active; hero?: 
         {/* Mobile cluster: primary CTA + hamburger */}
         <div className="flex md:hidden items-center gap-2">
           <Link
-            href="/"
+            href="/app"
             className="pp-btn pp-btn-primary"
             style={{ padding: '8px 14px', fontSize: 12, minHeight: 0 }}
           >
@@ -88,7 +88,7 @@ export default function MarketingNav({ active, hero }: { active: Active; hero?: 
   return (
     <nav className="relative flex justify-between items-center mb-8 md:mb-10">
       <Link
-        href="/landing"
+        href="/"
         className="inline-flex items-center gap-2.5 min-w-0"
         style={{ textDecoration: 'none', color: 'var(--pp-ink)' }}
         onClick={() => setOpen(false)}
@@ -189,7 +189,7 @@ function MobileSheet({
           ))}
           <div className="my-1 h-px" style={{ background: 'var(--pp-ink-3)', opacity: 0.25 }} />
           <Link
-            href="/"
+            href="/app"
             onClick={onClose}
             className="pp-btn pp-btn-ghost"
             style={{ padding: '12px 14px', fontSize: 14, justifyContent: 'flex-start' }}
@@ -197,7 +197,7 @@ function MobileSheet({
             Sign in
           </Link>
           <Link
-            href="/"
+            href="/app"
             onClick={onClose}
             className="pp-btn pp-btn-primary"
             style={{ padding: '12px 14px', fontSize: 14, justifyContent: 'flex-start' }}

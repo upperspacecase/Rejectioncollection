@@ -137,7 +137,7 @@ export default function ManifestoPage() {
             Your rejection count is the scoreboard of a life fully asked.
           </p>
           <Link
-            href="/"
+            href="/app"
             className="pp-btn"
             style={{ background: '#fff', padding: '12px 22px' }}
           >

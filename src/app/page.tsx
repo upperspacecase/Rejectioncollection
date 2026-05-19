@@ -1,182 +1,261 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { StoreProvider, useStore } from '@/lib/store';
-import { getRejections } from '@/lib/utils';
-import { getNewMilestone } from '@/lib/milestones';
-import { MilestoneDef } from '@/lib/types';
-import { AuthProvider, useAuth } from '@/lib/auth';
-import AuthScreen from '@/components/AuthScreen';
-import Onboarding from '@/components/Onboarding';
-import HomeTab from '@/components/HomeTab';
-import RejectionFeed from '@/components/RejectionFeed';
-import Leaderboard from '@/components/Leaderboard';
-import MeTab from '@/components/MeTab';
-import BottomNav, { type Tab } from '@/components/BottomNav';
-import QuickLog from '@/components/QuickLog';
-import LogConfirmation from '@/components/LogConfirmation';
-import MilestoneModal from '@/components/MilestoneModal';
+import { useEffect } from 'react';
+import Link from 'next/link';
+import MarketingNav from '@/components/MarketingNav';
+import Pricing from '@/components/Pricing';
+import { CheckIcon, ArrowRightIcon } from '@/components/Icons';
 
-function AppContent() {
-  const { state, isLoaded } = useStore();
-  const [activeTab, setActiveTab] = useState<Tab>('home');
-  const [showLog, setShowLog] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationIsRejection, setConfirmationIsRejection] = useState(true);
-  const [pendingMilestone, setPendingMilestone] = useState<MilestoneDef | null>(null);
-  const prevCountRef = useRef<number>(0);
+const CARDS = [
+  { ask: 'Asked for the corner office',         result: 'No',  rotate: -8, top: 60,  left: 20,  bg: 'var(--pp-card)' },
+  { ask: 'Cold emailed Marc Andreessen',        result: 'No',  rotate: 4,  top: 30,  left: 110, bg: 'var(--pp-coral-sf)' },
+  { ask: 'Asked for a 20% raise',               result: 'Yes', rotate: -3, top: 130, left: 70,  bg: 'var(--pp-mint-sf)' },
+  { ask: 'Requested a deadline extension',      result: 'No',  rotate: 6,  top: 210, left: 30,  bg: 'var(--pp-card)' },
+  { ask: 'Pitched the keynote idea',            result: 'No',  rotate: -5, top: 280, left: 120, bg: 'var(--pp-sun-sf)' },
+  { ask: 'Asked Jess out for coffee',           result: 'Yes', rotate: 3,  top: 350, left: 60,  bg: 'var(--pp-card)' },
+];
 
-  const rejectionCount = getRejections(state.entries).length;
+const VS_NOTEBOOK = [
+  ['A notebook can’t do streak math.', 'This counts each day you showed up — and breaks if you skip.'],
+  ['A notebook lets you rewrite the story.', 'Logged in five seconds, before your brain edits what happened.'],
+  ['A notebook doesn’t level up.', 'You hit 1, then 10, then 100, then 1,000. Each one a moment.'],
+];
 
+export default function LandingPage() {
   useEffect(() => {
-    if (isLoaded) {
-      prevCountRef.current = rejectionCount;
-    }
-  }, [isLoaded, rejectionCount]);
-
-  const handleLogged = useCallback((wasRejection: boolean) => {
-    setConfirmationIsRejection(wasRejection);
-    setShowConfirmation(true);
-
-    if (wasRejection) {
-      const newCount = prevCountRef.current + 1;
-      const milestone = getNewMilestone(prevCountRef.current, newCount);
-      if (milestone) {
-        setTimeout(() => setPendingMilestone(milestone), 1800);
-      }
-      prevCountRef.current = newCount;
-    }
+    document.body.classList.add('scroll-page');
+    return () => document.body.classList.remove('scroll-page');
   }, []);
-
-  if (!isLoaded) {
-    return (
-      <div className="h-dvh flex items-center justify-center">
-        <div className="pp-spinner" />
-      </div>
-    );
-  }
-
-  if (!state.profile.onboardingComplete) {
-    return <Onboarding />;
-  }
 
   return (
     <div
-      className="h-dvh flex flex-col overflow-hidden"
-      style={{ background: 'var(--pp-bg)' }}
+      className="pp-dots min-h-dvh"
+      style={{ background: 'var(--pp-bg)', backgroundSize: '18px 18px' }}
     >
-      <div className="flex-1 overflow-hidden">
-        <AnimatePresence mode="wait">
-          {activeTab === 'home' && (
-            <motion.div
-              key="home"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="h-full"
-            >
-              <HomeTab onSeeAll={() => setActiveTab('feed')} />
-            </motion.div>
-          )}
+      <MarketingNav active={null} hero />
 
-          {activeTab === 'feed' && (
-            <motion.div
-              key="feed"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="h-full"
+      {/* HERO */}
+      <main
+        className="grid items-center grid-cols-1 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-8 md:gap-12 px-5 md:px-8 pt-6 md:pt-8 pb-12 md:pb-16"
+        style={{ maxWidth: 1280, margin: '0 auto' }}
+      >
+        <div>
+          <h1
+            className="font-display mb-5"
+            style={{ fontSize: 'clamp(2.25rem, 7vw, 4.75rem)', lineHeight: 1.05 }}
+          >
+            Get told{' '}
+            <span
+              className="inline-block"
+              style={{
+                padding: '0 14px',
+                background: 'var(--pp-coral)',
+                color: '#fff',
+                borderRadius: 14,
+                transform: 'rotate(-2deg)',
+                boxShadow: 'var(--pp-shadow)',
+                border: '2px solid var(--pp-ink)',
+              }}
             >
-              <RejectionFeed />
-            </motion.div>
-          )}
+              no
+            </span>{' '}
+            1,000 times this year.
+          </h1>
 
-          {activeTab === 'board' && (
-            <motion.div
-              key="board"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="h-full"
-            >
-              <Leaderboard />
-            </motion.div>
-          )}
+          <p
+            className="mb-7"
+            style={{
+              fontSize: 18,
+              lineHeight: 1.55,
+              color: 'var(--pp-ink-2)',
+              maxWidth: 540,
+            }}
+          >
+            The people who win the most are the people who hear no the most. Not because
+            they&rsquo;re lucky. Because they ask.
+          </p>
 
-          {activeTab === 'me' && (
-            <motion.div
-              key="me"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="h-full"
+          <div className="flex items-center gap-3.5 mb-7 flex-wrap">
+            <Link
+              href="/app"
+              className="pp-btn pp-btn-primary"
+              style={{ padding: '14px 22px', fontSize: 15 }}
             >
-              <MeTab />
-            </motion.div>
-          )}
-        </AnimatePresence>
+              Start collecting
+              <ArrowRightIcon size={16} />
+            </Link>
+            <Link
+              href="/manifesto"
+              className="pp-btn"
+              style={{ padding: '14px 22px', fontSize: 15, background: 'var(--pp-card)' }}
+            >
+              Read the manifesto
+            </Link>
+          </div>
+
+          <div
+            className="flex items-center flex-wrap gap-4 text-sm"
+            style={{ color: 'var(--pp-ink-3)' }}
+          >
+            {['Free to start', 'No card', '30-second setup'].map((t) => (
+              <span key={t} className="inline-flex items-center gap-1.5">
+                <span
+                  className="inline-flex items-center justify-center"
+                  style={{
+                    width: 16,
+                    height: 16,
+                    borderRadius: 999,
+                    background: 'var(--pp-mint)',
+                    border: '1.5px solid var(--pp-ink)',
+                    color: '#fff',
+                  }}
+                >
+                  <CheckIcon size={10} strokeWidth={3} />
+                </span>
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative hidden md:block min-h-[460px]" style={{ height: 460 }}>
+          {CARDS.map((c, i) => (
+            <div
+              key={i}
+              className="pp-card absolute"
+              style={{
+                top: c.top,
+                left: c.left,
+                width: 280,
+                padding: '14px 16px',
+                background: c.bg,
+                transform: `rotate(${c.rotate}deg)`,
+                zIndex: i,
+              }}
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span
+                  className="pp-pill"
+                  style={{
+                    padding: '3px 10px',
+                    fontSize: 11,
+                    background: c.result === 'Yes' ? 'var(--pp-mint)' : 'var(--pp-coral)',
+                    color: '#fff',
+                  }}
+                >
+                  {c.result === 'Yes' ? '✓ Yes' : '✕ No'}
+                </span>
+                <span
+                  className="text-xs"
+                  style={{ color: 'var(--pp-ink-3)', fontFamily: 'DM Mono, monospace' }}
+                >
+                  #{1000 + i}
+                </span>
+              </div>
+              <div className="font-display" style={{ fontSize: 16, lineHeight: 1.2 }}>
+                {c.ask}
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+
+      {/* PRICING */}
+      <div style={{ background: 'var(--pp-bg)' }}>
+        <Pricing />
       </div>
 
-      <BottomNav active={activeTab} onTab={setActiveTab} onLog={() => setShowLog(true)} />
+      {/* VS NOTEBOOK */}
+      <section
+        className="px-5 md:px-8 py-12 md:py-16"
+        style={{ background: 'var(--pp-card-2)' }}
+      >
+        <div style={{ maxWidth: 1080, margin: '0 auto' }}>
+          <h2
+            className="font-display mb-2"
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
+          >
+            Why not a notebook?
+          </h2>
+          <p className="mb-8" style={{ fontSize: 16, color: 'var(--pp-ink-2)' }}>
+            Because a notebook can&rsquo;t keep score.
+          </p>
 
-      <AnimatePresence>
-        {showLog && (
-          <QuickLog onClose={() => setShowLog(false)} onLogged={handleLogged} />
-        )}
-      </AnimatePresence>
+          <div className="flex flex-col gap-3">
+            {VS_NOTEBOOK.map(([title, body], i) => (
+              <div
+                key={i}
+                className="pp-card flex gap-4 items-start"
+                style={{ padding: 20 }}
+              >
+                <span
+                  className="flex items-center justify-center flex-shrink-0 font-display font-bold"
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 999,
+                    background: 'var(--pp-coral)',
+                    color: '#fff',
+                    border: '2px solid var(--pp-ink)',
+                    boxShadow: 'var(--pp-shadow-sm)',
+                    fontSize: 16,
+                  }}
+                >
+                  ✕
+                </span>
+                <div>
+                  <div className="font-display text-lg mb-1">{title}</div>
+                  <p style={{ fontSize: 14, color: 'var(--pp-ink-2)', lineHeight: 1.55 }}>
+                    {body}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <AnimatePresence>
-        {showConfirmation && (
-          <LogConfirmation
-            isRejection={confirmationIsRejection}
-            onDone={() => setShowConfirmation(false)}
-          />
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {pendingMilestone && (
-          <MilestoneModal
-            milestone={pendingMilestone}
-            onClose={() => setPendingMilestone(null)}
-          />
-        )}
-      </AnimatePresence>
+      {/* REPEAT CTA */}
+      <section className="px-5 md:px-8 pt-6 md:pt-8 pb-16 md:pb-20">
+        <div
+          className="pp-card text-center px-6 py-10 md:px-8 md:py-12"
+          style={{
+            maxWidth: 720,
+            margin: '0 auto',
+            background: 'var(--pp-coral)',
+            color: '#fff',
+            boxShadow: 'var(--pp-shadow-lg)',
+          }}
+        >
+          <h2
+            className="font-display mb-3"
+            style={{ fontSize: 'clamp(1.75rem, 4.5vw, 2.5rem)', lineHeight: 1.1 }}
+          >
+            Your first rejection is out there.
+          </h2>
+          <p
+            className="mb-7 mx-auto"
+            style={{ fontSize: 17, lineHeight: 1.55, opacity: 0.92, maxWidth: 480 }}
+          >
+            Sign up, log it, watch the count climb. Free to start, no card.
+          </p>
+          <Link
+            href="/app"
+            className="pp-btn"
+            style={{
+              padding: '14px 26px',
+              fontSize: 15,
+              background: 'var(--pp-ink)',
+              color: 'var(--pp-bg)',
+              borderColor: 'var(--pp-bg)',
+              boxShadow: '0 3px 0 rgba(0,0,0,0.5)',
+            }}
+          >
+            Start collecting
+            <ArrowRightIcon size={16} />
+          </Link>
+        </div>
+      </section>
     </div>
-  );
-}
-
-function AuthGate() {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="h-dvh flex items-center justify-center">
-        <div className="pp-spinner" />
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <AuthScreen />;
-  }
-
-  return (
-    <StoreProvider>
-      <AppContent />
-    </StoreProvider>
-  );
-}
-
-export default function Home() {
-  return (
-    <AuthProvider>
-      <AuthGate />
-    </AuthProvider>
   );
 }

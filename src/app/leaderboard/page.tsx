@@ -63,7 +63,7 @@ export default function PublicLeaderboard() {
             The Board is for collectors only — log your first rejection to plant your flag and
             check who&rsquo;s ahead.
           </p>
-          <Link href="/" className="pp-btn pp-btn-primary" style={{ padding: '12px 22px' }}>
+          <Link href="/app" className="pp-btn pp-btn-primary" style={{ padding: '12px 22px' }}>
             Sign in to see it
             <ArrowRightIcon size={16} />
           </Link>
