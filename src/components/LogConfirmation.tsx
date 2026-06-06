@@ -1,6 +1,8 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { getReframe } from '@/lib/reframes';
 import { CheckIcon, Confetti } from './Icons';
 
 interface LogConfirmationProps {
@@ -10,6 +12,7 @@ interface LogConfirmationProps {
 
 export default function LogConfirmation({ isRejection, onDone }: LogConfirmationProps) {
   const color = isRejection ? 'var(--pp-coral)' : 'var(--pp-mint)';
+  const reframe = useMemo(() => getReframe(isRejection), [isRejection]);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -64,7 +67,7 @@ export default function LogConfirmation({ isRejection, onDone }: LogConfirmation
           {isRejection ? 'Logged!' : 'A yes!'}
         </div>
         <p className="text-sm" style={{ color: 'var(--pp-ink-2)' }}>
-          {isRejection ? 'That counted. Onto the next one.' : 'Bonus points. Keep the volume up.'}
+          {reframe}
         </p>
       </motion.div>
     </motion.div>
