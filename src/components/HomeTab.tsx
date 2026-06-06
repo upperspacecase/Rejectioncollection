@@ -1,13 +1,12 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { useStore } from '@/lib/store';
 import {
   getRejections,
   getYeses,
   getStreak,
-  getYearlyRejections,
   formatRelativeTime,
 } from '@/lib/utils';
 import { MILESTONES } from '@/lib/milestones';
@@ -36,8 +35,6 @@ export default function HomeTab({
   const yeses = getYeses(entries).length;
   const total = entries.length;
   const streak = getStreak(entries);
-  const yearlyCount = getYearlyRejections(entries);
-  const goalProgress = Math.min(1, yearlyCount / profile.yearlyGoal);
 
   const nextMilestone = useMemo(() => {
     for (const m of MILESTONES) {
@@ -145,7 +142,7 @@ export default function HomeTab({
           </div>
           <div className="text-xs mt-1.5" style={{ opacity: 0.9 }}>
             {todayAsks === 0
-              ? 'Three asks today. Get the first one.'
+              ? 'One ask keeps your streak alive. Get the first one in.'
               : slotsFilled < dailyGoal
                 ? `${dailyGoal - slotsFilled} to go.`
                 : 'Day done. Anything extra is gravy.'}
@@ -211,36 +208,22 @@ export default function HomeTab({
         <PPStat n={yeses} label="Yeses" bg="var(--pp-mint-sf)" />
       </div>
 
-      {/* Year goal */}
+      {/* Consistency */}
       <div className="pp-card pp-card-sm mb-3" style={{ padding: 14 }}>
         <div className="flex justify-between items-baseline mb-2">
           <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--pp-ink-2)' }}>
-            {new Date().getFullYear()} Goal
+            Consistency
           </span>
-          <span className="text-sm font-bold">
-            {yearlyCount.toLocaleString()} / {profile.yearlyGoal.toLocaleString()}
+          <span className="text-sm font-bold inline-flex items-center gap-1">
+            {streak > 0 && <FlameIcon size={14} style={{ color: 'var(--pp-coral)' }} />}
+            {streak} day{streak === 1 ? '' : 's'}
           </span>
         </div>
-        <div
-          className="relative overflow-hidden"
-          style={{
-            height: 12,
-            background: 'var(--pp-bg-deep)',
-            border: '1.5px solid var(--pp-ink)',
-            borderRadius: 999,
-          }}
-        >
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${goalProgress * 100}%` }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            style={{
-              height: '100%',
-              background: 'var(--pp-coral)',
-              borderRadius: 999,
-            }}
-          />
-        </div>
+        <p className="text-xs" style={{ color: 'var(--pp-ink-2)', lineHeight: 1.5 }}>
+          {streak === 0
+            ? 'Showing up daily is the whole game. One brave ask today starts the streak.'
+            : `${streak} day${streak === 1 ? '' : 's'} of doing the uncomfortable thing. Keep it alive — one ask today.`}
+        </p>
         {nextMilestone && (
           <div className="text-xs mt-1.5" style={{ color: 'var(--pp-ink-3)' }}>
             Next milestone:{' '}
