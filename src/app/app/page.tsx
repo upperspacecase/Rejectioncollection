@@ -11,6 +11,7 @@ import AuthScreen from '@/components/AuthScreen';
 import Onboarding from '@/components/Onboarding';
 import HomeTab from '@/components/HomeTab';
 import RejectionFeed from '@/components/RejectionFeed';
+import ChallengeView from '@/components/ChallengeView';
 import Leaderboard from '@/components/Leaderboard';
 import MeTab from '@/components/MeTab';
 import BottomNav, { type Tab } from '@/components/BottomNav';
@@ -77,7 +78,10 @@ function AppContent() {
               transition={{ duration: 0.15 }}
               className="h-full"
             >
-              <HomeTab onSeeAll={() => setActiveTab('feed')} />
+              <HomeTab
+                onSeeAll={() => setActiveTab('feed')}
+                onOpenChallenge={() => setActiveTab('challenge')}
+              />
             </motion.div>
           )}
 
@@ -91,6 +95,19 @@ function AppContent() {
               className="h-full"
             >
               <RejectionFeed />
+            </motion.div>
+          )}
+
+          {activeTab === 'challenge' && (
+            <motion.div
+              key="challenge"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="h-full"
+            >
+              <ChallengeView />
             </motion.div>
           )}
 

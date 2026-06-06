@@ -17,13 +17,17 @@ import { Rejection } from '@/lib/types';
 import { FlameIcon, StarIcon, CheckIcon, SparkleIcon } from './Icons';
 import LastThirtyDaysStrip from './LastThirtyDaysStrip';
 import AskLibrary from './AskLibrary';
-import ChallengeView from './ChallengeView';
 
-export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
+export default function HomeTab({
+  onSeeAll,
+  onOpenChallenge,
+}: {
+  onSeeAll: () => void;
+  onOpenChallenge: () => void;
+}) {
   const { state } = useStore();
   const { entries, profile } = state;
   const [showLibrary, setShowLibrary] = useState(false);
-  const [showChallenge, setShowChallenge] = useState(false);
 
   const missionsDone = (profile.completedMissions ?? []).length;
   const currentWeek = getCurrentWeek(profile.joinDate);
@@ -168,7 +172,7 @@ export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
       {/* Challenge + Ask Library launchers */}
       <div className="grid grid-cols-2 gap-2 mb-3">
         <button
-          onClick={() => setShowChallenge(true)}
+          onClick={onOpenChallenge}
           className="pp-card pp-card-sm cursor-pointer text-left flex flex-col"
           style={{ padding: 14, background: 'var(--pp-sun-sf)' }}
         >
@@ -298,9 +302,6 @@ export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
             initialCategory={profile.lifeArea}
             onClose={() => setShowLibrary(false)}
           />
-        )}
-        {showChallenge && (
-          <ChallengeView key="chal" onClose={() => setShowChallenge(false)} />
         )}
       </AnimatePresence>
     </div>

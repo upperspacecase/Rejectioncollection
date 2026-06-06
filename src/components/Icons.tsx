@@ -61,6 +61,14 @@ export function PlusIcon(p: IconProps) {
   );
 }
 
+export function BoltIcon(p: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" {...base(p)}>
+      <path d="M13 2 L4 14 H11 L11 22 L20 10 H13 Z" />
+    </svg>
+  );
+}
+
 export function CheckIcon(p: IconProps) {
   return (
     <svg viewBox="0 0 24 24" {...base(p)}>

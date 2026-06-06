@@ -1,9 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { HomeIcon, ListIcon, BoardIcon, MeIcon, PlusIcon } from './Icons';
+import { HomeIcon, BoltIcon, BoardIcon, MeIcon, PlusIcon } from './Icons';
 
-export type Tab = 'home' | 'feed' | 'board' | 'me';
+export type Tab = 'home' | 'feed' | 'challenge' | 'board' | 'me';
 
 interface BottomNavProps {
   active: Tab;
@@ -26,8 +26,8 @@ export default function BottomNav({ active, onTab, onLog }: BottomNavProps) {
         <NavBtn label="Home" active={active === 'home'} onClick={() => onTab('home')}>
           <HomeIcon />
         </NavBtn>
-        <NavBtn label="Log" active={active === 'feed'} onClick={() => onTab('feed')}>
-          <ListIcon />
+        <NavBtn label="Challenge" active={active === 'challenge'} onClick={() => onTab('challenge')}>
+          <BoltIcon />
         </NavBtn>
 
         <motion.button
