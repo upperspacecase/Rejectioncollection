@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -98,8 +99,9 @@ export default function Leaderboard() {
           {top.length > 0 && (
             <div className="grid grid-cols-3 gap-1.5 mb-3">
               {top.map((t, i) => (
-                <div
+                <Link
                   key={t.uid}
+                  href={`/u/${t.uid}`}
                   className="pp-card text-center"
                   style={{ padding: '12px 8px', background: topBg[i] }}
                 >
@@ -122,7 +124,7 @@ export default function Leaderboard() {
                       {t.streak}d
                     </div>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
           )}
@@ -131,8 +133,8 @@ export default function Leaderboard() {
             {rest.map((row, i) => {
               const isMe = row.uid === user?.uid;
               return (
+                <Link key={row.uid} href={`/u/${row.uid}`} className="block">
                 <motion.div
-                  key={row.uid}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.025, duration: 0.18 }}
@@ -174,6 +176,7 @@ export default function Leaderboard() {
                     {row.rejectionCount.toLocaleString()}
                   </span>
                 </motion.div>
+                </Link>
               );
             })}
           </div>

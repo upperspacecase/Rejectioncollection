@@ -18,7 +18,7 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 import { AppState, Rejection, UserProfile } from './types';
-import { generateId, getRejections, getStreak } from './utils';
+import { generateId, getRejections, getStreak, getYeses, getWeeklyNos } from './utils';
 import { useAuth } from './auth';
 import { db } from './firebase';
 import { claimFoundingMemberIfEligible } from './founders';
@@ -241,6 +241,26 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       payload.foundingMemberNumber = state.profile.foundingMemberNumber;
     }
     setDoc(leaderboardRef, payload).catch(() => {});
+
+    // Public profile doc — powers the shareable /u/[uid] page + OG card.
+    const yeses = getYeses(state.entries).length;
+    const { count: weeklyNos, featured } = getWeeklyNos(state.entries);
+    const profileRef = doc(db, 'profiles', user.uid);
+    const profilePayload: Record<string, string | number | null> = {
+      name: state.profile.name || 'Anonymous',
+      total: state.entries.length,
+      nos: rejections,
+      yeses,
+      streak,
+      weeklyNos,
+      noOfWeek: featured ? featured.ask : null,
+      joinDate: state.profile.joinDate,
+      updatedAt: Date.now(),
+    };
+    if (state.profile.foundingMemberNumber !== undefined) {
+      profilePayload.foundingMemberNumber = state.profile.foundingMemberNumber;
+    }
+    setDoc(profileRef, profilePayload).catch(() => {});
   }, [user, isLoaded, state.entries, state.profile]);
 
   const logEntry = useCallback(

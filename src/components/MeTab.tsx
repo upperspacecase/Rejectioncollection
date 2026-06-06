@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useStore } from '@/lib/store';
 import { useAuth } from '@/lib/auth';
 import {
@@ -8,9 +9,10 @@ import {
   getYeses,
   getStreak,
   getYearlyRejections,
+  getWeeklyNos,
 } from '@/lib/utils';
 import { getAchievedMilestones } from '@/lib/milestones';
-import { CheckIcon, TrophyIcon, FlameIcon } from './Icons';
+import { CheckIcon, TrophyIcon, FlameIcon, ArrowRightIcon } from './Icons';
 import ContributionHeatmap from './ContributionHeatmap';
 
 export default function MeTab() {
@@ -19,11 +21,26 @@ export default function MeTab() {
   const [editing, setEditing] = useState(false);
   const [draftName, setDraftName] = useState(state.profile.name);
 
+  const [linkCopied, setLinkCopied] = useState(false);
+
   const rejections = getRejections(state.entries).length;
   const yeses = getYeses(state.entries).length;
   const streak = getStreak(state.entries);
   const yearly = getYearlyRejections(state.entries);
+  const weekly = getWeeklyNos(state.entries);
   const achieved = getAchievedMilestones(rejections);
+
+  function copyProfileLink() {
+    const clip = typeof navigator !== 'undefined' ? navigator.clipboard : undefined;
+    if (!user || !clip) return;
+    clip
+      .writeText(`${window.location.origin}/u/${user.uid}`)
+      .then(() => {
+        setLinkCopied(true);
+        setTimeout(() => setLinkCopied(false), 1600);
+      })
+      .catch(() => {});
+  }
   const joined = new Date(state.profile.joinDate).toLocaleDateString('en-US', {
     month: 'long',
     year: 'numeric',
@@ -126,6 +143,41 @@ export default function MeTab() {
         </div>
       </div>
 
+      {user && (
+        <div className="pp-card pp-card-sm mb-3" style={{ padding: 14, background: 'var(--pp-grape-sf)' }}>
+          <div className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: 'var(--pp-ink-2)' }}>
+            Your public card
+          </div>
+          <p className="text-sm mb-2.5" style={{ color: 'var(--pp-ink-2)', lineHeight: 1.5 }}>
+            A shareable card of your collection. Public stakes make you braver.
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={copyProfileLink}
+              className="pp-btn flex-1"
+              style={{
+                padding: '9px 0',
+                fontSize: 13,
+                justifyContent: 'center',
+                background: linkCopied ? 'var(--pp-mint)' : 'var(--pp-card)',
+                color: linkCopied ? '#fff' : 'var(--pp-ink)',
+              }}
+            >
+              {linkCopied ? <CheckIcon size={13} strokeWidth={3} /> : null}
+              {linkCopied ? 'Copied' : 'Copy link'}
+            </button>
+            <Link
+              href={`/u/${user.uid}`}
+              className="pp-btn pp-btn-primary flex-1"
+              style={{ padding: '9px 0', fontSize: 13, justifyContent: 'center' }}
+            >
+              View
+              <ArrowRightIcon size={14} />
+            </Link>
+          </div>
+        </div>
+      )}
+
       <div className="mb-3">
         <ContributionHeatmap />
       </div>
@@ -141,6 +193,24 @@ export default function MeTab() {
           bg="var(--pp-grape-sf)"
           icon={streak > 0 ? <FlameIcon size={16} style={{ color: 'var(--pp-coral)' }} /> : null}
         />
+      </div>
+
+      <div className="pp-card pp-card-sm mb-3" style={{ padding: 14, background: 'var(--pp-sun-sf)' }}>
+        <div className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: 'var(--pp-ink-2)' }}>
+          No of the week
+        </div>
+        {weekly.featured ? (
+          <p className="font-display text-base" style={{ lineHeight: 1.3 }}>
+            &ldquo;{weekly.featured.ask}&rdquo;
+          </p>
+        ) : (
+          <p className="text-sm" style={{ color: 'var(--pp-ink-2)' }}>
+            Log a no this week and it shows up here — and on your shareable card.
+          </p>
+        )}
+        <div className="text-xs font-semibold mt-1.5" style={{ color: 'var(--pp-ink-3)' }}>
+          {weekly.count} {weekly.count === 1 ? 'no' : 'nos'} this week
+        </div>
       </div>
 
       <div className="pp-card pp-card-sm mb-3" style={{ padding: 14, background: 'var(--pp-card)' }}>

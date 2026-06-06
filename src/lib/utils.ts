@@ -47,6 +47,17 @@ export function getStreak(entries: Rejection[]): number {
   return streak;
 }
 
+export function getWeeklyNos(entries: Rejection[]): {
+  count: number;
+  featured: Rejection | null;
+} {
+  const weekAgo = Date.now() - 7 * 86400000;
+  const recent = getRejections(entries)
+    .filter((e) => e.timestamp >= weekAgo)
+    .sort((a, b) => b.timestamp - a.timestamp);
+  return { count: recent.length, featured: recent[0] ?? null };
+}
+
 export function getYearlyRejections(entries: Rejection[]): number {
   const now = new Date();
   const year = now.getFullYear();
