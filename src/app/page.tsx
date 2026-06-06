@@ -11,7 +11,7 @@ const CARDS = [
   { ask: 'Cold emailed Marc Andreessen',        result: 'No',  rotate: 4,  top: 30,  left: 110, bg: 'var(--pp-coral-sf)' },
   { ask: 'Asked for a 20% raise',               result: 'Yes', rotate: -3, top: 130, left: 70,  bg: 'var(--pp-mint-sf)' },
   { ask: 'Requested a deadline extension',      result: 'No',  rotate: 6,  top: 210, left: 30,  bg: 'var(--pp-card)' },
-  { ask: 'Pitched the keynote idea',            result: 'No',  rotate: -5, top: 280, left: 120, bg: 'var(--pp-sun-sf)' },
+  { ask: 'Asked for a discount at supermarket', result: 'No',  rotate: -5, top: 280, left: 120, bg: 'var(--pp-sun-sf)' },
   { ask: 'Asked Jess out for coffee',           result: 'Yes', rotate: 3,  top: 350, left: 60,  bg: 'var(--pp-card)' },
 ];
 
@@ -44,7 +44,7 @@ export default function LandingPage() {
             className="font-display mb-5"
             style={{ fontSize: 'clamp(2.25rem, 7vw, 4.75rem)', lineHeight: 1.05 }}
           >
-            Get told{' '}
+            Ask for the{' '}
             <span
               className="inline-block"
               style={{
@@ -57,9 +57,9 @@ export default function LandingPage() {
                 border: '2px solid var(--pp-ink)',
               }}
             >
-              no
-            </span>{' '}
-            1,000 times this year.
+              thing
+            </span>
+            .
           </h1>
 
           <p
@@ -71,8 +71,9 @@ export default function LandingPage() {
               maxWidth: 540,
             }}
           >
-            The people who win the most are the people who hear no the most. Not because
-            they&rsquo;re lucky. Because they ask.
+            Build the courage to ask for dates, deals, raises, intros, discounts, and
+            opportunities — one brave ask at a time. Brazen is the scoreboard and community
+            to keep you on track.
           </p>
 
           <div className="flex items-center gap-3.5 mb-7 flex-wrap">
@@ -92,6 +93,10 @@ export default function LandingPage() {
               Read the manifesto
             </Link>
           </div>
+
+          <p className="mb-5 text-sm" style={{ color: 'var(--pp-ink-2)' }}>
+            <b style={{ color: 'var(--pp-ink)' }}>143 asks</b> logged this week by early users
+          </p>
 
           <div
             className="flex items-center flex-wrap gap-4 text-sm"
