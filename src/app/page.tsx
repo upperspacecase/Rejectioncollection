@@ -36,15 +36,15 @@ export default function LandingPage() {
 
       {/* HERO */}
       <main
-        className="grid items-center grid-cols-1 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-8 md:gap-12 px-5 md:px-8 pt-6 md:pt-8 pb-12 md:pb-16"
-        style={{ maxWidth: 1280, margin: '0 auto' }}
+        className="px-5 md:px-8 pt-8 md:pt-12 pb-12 md:pb-16"
+        style={{ maxWidth: 1080, margin: '0 auto' }}
       >
-        <div>
+        <div style={{ maxWidth: 980 }}>
           <h1
-            className="font-display mb-5"
-            style={{ fontSize: 'clamp(2.25rem, 7vw, 4.75rem)', lineHeight: 1.05 }}
+            className="font-display mb-6"
+            style={{ fontSize: 'clamp(2.75rem, 11vw, 9rem)', lineHeight: 1.02 }}
           >
-            Get comfortable with the{' '}
+            Get comfortable{' '}
             <span
               className="inline-block"
               style={{
@@ -57,23 +57,23 @@ export default function LandingPage() {
                 border: '2px solid var(--pp-ink)',
               }}
             >
-              uncomfortable
-            </span>
-            .
+              asking
+            </span>{' '}
+            for what you want
           </h1>
 
           <p
-            className="mb-7"
+            className="mb-8"
             style={{
-              fontSize: 18,
-              lineHeight: 1.55,
+              fontSize: 'clamp(1.25rem, 3.5vw, 2.125rem)',
+              lineHeight: 1.4,
               color: 'var(--pp-ink-2)',
-              maxWidth: 540,
+              maxWidth: 760,
             }}
           >
-            Everything you want is on the other side of it. Brazen gets you doing one brave
-            ask a day — logged, counted, and turned into a streak — because success is just
-            doing the hard things, consistently.
+            Outside your comfort zone is where you grow. Every day, Brazen gives you one
+            uncomfortable ask to make. You do it, log it, and start to become the person you
+            are meant to be.
           </p>
 
           <div className="flex items-center gap-3.5 mb-7 flex-wrap">
@@ -123,7 +123,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="relative hidden md:block min-h-[460px]" style={{ height: 460 }}>
+        <div className="relative hidden md:block" style={{ width: 420, height: 460, marginTop: 32 }}>
           {CARDS.map((c, i) => (
             <div
               key={i}
