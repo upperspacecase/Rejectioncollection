@@ -60,8 +60,8 @@ export default function PublicLeaderboard() {
             className="mb-5 mx-auto"
             style={{ fontSize: 15, color: 'var(--pp-ink-2)', maxWidth: 420, lineHeight: 1.55 }}
           >
-            The Board is for collectors only — log your first rejection to plant your flag and
-            check who&rsquo;s ahead.
+            The Board is for the brave only — log your first ask to plant your flag and see
+            who&rsquo;s ahead.
           </p>
           <Link href="/app" className="pp-btn pp-btn-primary" style={{ padding: '12px 22px' }}>
             Sign in to see it

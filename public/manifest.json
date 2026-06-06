@@ -1,7 +1,7 @@
 {
   "name": "Brazen",
   "short_name": "Brazen",
-  "description": "The scoreboard for people who ask for things. Log your rejections, build a streak, stop flinching when the answer is no.",
+  "description": "The system for getting comfortable with the uncomfortable. Do one brave ask a day, build the streak, and get what you want.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

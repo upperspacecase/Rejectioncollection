@@ -6,7 +6,7 @@ import { ArrowRightIcon } from '@/components/Icons';
 
 export const metadata: Metadata = {
   title: 'Manifesto — Brazen',
-  description: 'Why we collect rejection.',
+  description: 'Why courage is a muscle you can build.',
 };
 
 const RULES = [
@@ -33,9 +33,9 @@ export default function ManifestoPage() {
         </span>
 
         <h1 className="font-display mb-7" style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)' }}>
-          Most people avoid rejection.
+          Most people avoid the uncomfortable.
           <br />
-          <span style={{ color: 'var(--pp-coral)' }}>You collect it.</span>
+          <span style={{ color: 'var(--pp-coral)' }}>You get good at it.</span>
         </h1>
 
         <div
@@ -43,8 +43,8 @@ export default function ManifestoPage() {
           style={{ padding: 24, background: 'var(--pp-sun-sf)' }}
         >
           <p className="font-display" style={{ fontSize: 22, lineHeight: 1.35 }}>
-            &ldquo;The people who win the most are the people who hear no the most. Not because
-            they&rsquo;re lucky. Because they ask.&rdquo;
+            &ldquo;Your success in life is just your ability to do uncomfortable things —
+            consistently.&rdquo;
           </p>
         </div>
 
@@ -52,9 +52,9 @@ export default function ManifestoPage() {
           className="mb-6"
           style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--pp-ink-2)' }}
         >
-          Somewhere along the way you learned that rejection means you did something wrong.
-          That a no is a verdict on your worth. That the smart move is to only ask when
-          you&rsquo;re sure the answer is yes.
+          Somewhere along the way you learned that discomfort is a signal to stop. That a no is
+          a verdict on your worth. That the smart move is to only ask when you&rsquo;re already
+          sure the answer is yes.
         </p>
         <p
           className="mb-9"
@@ -70,15 +70,15 @@ export default function ManifestoPage() {
           className="mb-4"
           style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--pp-ink-2)' }}
         >
-          What if rejection wasn&rsquo;t something that happened to you, but something you went
-          out and collected? Every no is a rep. Every attempt is proof you showed up.
+          What if discomfort wasn&rsquo;t a wall but a rep? Every uncomfortable ask makes the
+          next one easier. Every attempt is proof you showed up.
         </p>
         <p
           className="mb-9"
           style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--pp-ink-2)' }}
         >
-          A rejection count isn&rsquo;t a measure of failure. It&rsquo;s a measure of volume.
-          And volume is the only variable you actually control.
+          Your count isn&rsquo;t a measure of failure. It&rsquo;s a measure of how often you did
+          the hard thing — and that&rsquo;s the only variable you actually control.
         </p>
 
         <div className="pp-squiggle mb-8" />
@@ -92,8 +92,8 @@ export default function ManifestoPage() {
             1,000
           </div>
           <div style={{ fontSize: 15, lineHeight: 1.55, color: 'var(--pp-ink-2)' }}>
-            rejections in a year sounds impossible. It&rsquo;s about <b>3 per day</b>. Three asks.
-            Three chances to be brave. Three moments where you chose action over avoidance.
+            uncomfortable asks in a year sounds impossible. It&rsquo;s about <b>3 a day</b>.
+            Three small braveries. That&rsquo;s all consistency really is.
           </div>
         </div>
 
@@ -134,14 +134,14 @@ export default function ManifestoPage() {
           style={{ padding: 28, background: 'var(--pp-coral)', color: '#fff' }}
         >
           <p className="font-display mb-4" style={{ fontSize: 22, lineHeight: 1.35 }}>
-            Your rejection count is the scoreboard of a life fully asked.
+            Get comfortable with the uncomfortable. Everything you want is on the other side.
           </p>
           <Link
             href="/app"
             className="pp-btn"
             style={{ background: '#fff', padding: '12px 22px' }}
           >
-            Start collecting
+            Start free
             <ArrowRightIcon size={16} />
           </Link>
         </div>

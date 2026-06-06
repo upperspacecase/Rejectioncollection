@@ -62,13 +62,13 @@ export default function Onboarding() {
                   </div>
                 </div>
 
-                <h1 className="font-display text-3xl mb-3">Welcome, future collector.</h1>
+                <h1 className="font-display text-3xl mb-3">Welcome. Time to get uncomfortable.</h1>
                 <p
                   className="text-base mx-auto mb-6"
                   style={{ color: 'var(--pp-ink-2)', lineHeight: 1.55, maxWidth: 320 }}
                 >
-                  The people who win the most hear no the most. We made this app to cheer you on
-                  every time you ask — whatever the answer is.
+                  Everything you want is on the other side of uncomfortable. Brazen gets you
+                  doing one brave ask a day and cheers every rep — whatever the answer is.
                 </p>
               </div>
 
@@ -76,7 +76,7 @@ export default function Onboarding() {
                 {[
                   { icon: <ReceiptIcon size={22} />, text: 'Log every ask, big or small' },
                   { icon: <FlameIcon size={22} style={{ color: 'var(--pp-coral)' }} />, text: 'Build streaks that compound' },
-                  { icon: <TrophyIcon size={22} />, text: 'Hit milestones from 1 to 1,000' },
+                  { icon: <TrophyIcon size={22} />, text: 'Watch the hard stuff get easy' },
                 ].map((row, i) => (
                   <div
                     key={i}
@@ -286,8 +286,8 @@ export default function Onboarding() {
 
                 <h2 className="font-display text-3xl mb-3">You&rsquo;re ready, {displayName}!</h2>
                 <p className="text-base mb-7" style={{ color: 'var(--pp-ink-2)', lineHeight: 1.55 }}>
-                  Your goal: <b>1,000 rejections this year</b>. That&rsquo;s about 3 a day. Three asks.
-                  Three small braveries.
+                  Your only goal: <b>one uncomfortable ask a day</b>. Do that, and the rest
+                  compounds.
                 </p>
               </div>
 
@@ -305,7 +305,7 @@ export default function Onboarding() {
                 className="pp-btn pp-btn-primary w-full text-base"
                 style={{ padding: '14px 0' }}
               >
-                Start collecting
+                Make your first ask
                 <ArrowRightIcon size={16} />
               </button>
             </motion.div>

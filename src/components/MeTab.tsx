@@ -149,7 +149,7 @@ export default function MeTab() {
             Your public card
           </div>
           <p className="text-sm mb-2.5" style={{ color: 'var(--pp-ink-2)', lineHeight: 1.5 }}>
-            A shareable card of your collection. Public stakes make you braver.
+            A shareable card of your reps. Public stakes make you braver.
           </p>
           <div className="flex gap-2">
             <button

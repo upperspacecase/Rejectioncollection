@@ -82,7 +82,7 @@ export default function Leaderboard() {
         <div>
           <h1 className="font-display text-2xl">The Board</h1>
           <p className="text-sm" style={{ color: 'var(--pp-ink-3)' }}>
-            Top 50 collectors this year
+            The bravest 50 this year
           </p>
         </div>
         {userRank > 0 && (

@@ -15,6 +15,9 @@ const REJECTION_REFRAMES = [
   'Another no for the collection. They add up to courage.',
   'You aimed high enough to get told no. Good.',
   'Reps make the muscle. That was a rep.',
+  'You did the uncomfortable thing. That’s the whole point.',
+  'Felt uncomfortable? Good. That’s growth.',
+  'Comfortable is where wanting goes to die. Not today.',
 ];
 
 const YES_LINES = [

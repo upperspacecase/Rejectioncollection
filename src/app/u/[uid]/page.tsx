@@ -14,7 +14,7 @@ export async function generateMetadata({
   const p = await fetchPublicProfile(uid);
   if (!p) return { title: 'Brazen collector' };
   const title = `${p.name} — ${p.nos.toLocaleString()} nos collected`;
-  const description = `${p.name} is building the nerve to ask. ${p.nos.toLocaleString()} rejections and counting on Brazen.`;
+  const description = `${p.name} is getting comfortable with the uncomfortable — ${p.nos.toLocaleString()} brave asks and counting on Brazen.`;
   return {
     title,
     description,
@@ -127,11 +127,11 @@ export default async function PublicProfilePage({
         className="pp-btn pp-btn-primary mt-6"
         style={{ padding: '13px 22px', fontSize: 15 }}
       >
-        Start your own collection
+        Start your own streak
         <ArrowRightIcon size={16} />
       </Link>
       <p className="text-xs mt-3" style={{ color: 'var(--pp-ink-3)' }}>
-        The 30-day courage challenge · free to start
+        Get comfortable with the uncomfortable · free to start
       </p>
     </div>
   );

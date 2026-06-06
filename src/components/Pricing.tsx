@@ -45,7 +45,7 @@ export default function Pricing({ variant = 'section' }: Props) {
           className="font-display mb-3"
           style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
         >
-          The 30-day courage challenge that helps you get the things you want.
+          Get comfortable with the uncomfortable.
         </h2>
         <p
           className="mb-10"
@@ -56,8 +56,8 @@ export default function Pricing({ variant = 'section' }: Props) {
             maxWidth: 620,
           }}
         >
-          Brazen isn&rsquo;t a tracker you check. It&rsquo;s a program that tells you what to ask,
-          hands you the words, and keeps score while you build the nerve. Start free.
+          Everything you want is on the other side of it. Brazen gets you doing one brave ask a
+          day, then builds the streak that turns courage into a habit. Start free.
         </p>
 
         <div
@@ -72,9 +72,9 @@ export default function Pricing({ variant = 'section' }: Props) {
             title="Core app"
             price="Free"
             priceSub="forever · no card · no paywall on the habit loop"
-            body="Track your asks. Log the rejections. Build the streak. Reach the milestones."
+            body="Do the daily ask. Log it. Build the streak. The habit that builds the nerve."
             features={CORE}
-            cta="Start collecting"
+            cta="Start free"
             ctaHref="/"
             ctaStyle="default"
           />
@@ -91,7 +91,7 @@ export default function Pricing({ variant = 'section' }: Props) {
                 </span>
               </div>
             }
-            body="The full courage program. The first 50 people to join get the Club free for life and shape what we build next based on what you ask for."
+            body="The full system for getting comfortable with the uncomfortable. The first 50 to join get the Club free for life and shape what we build next."
             features={CLUB}
             cta="Claim your founding spot"
             ctaHref="/"

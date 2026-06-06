@@ -119,7 +119,7 @@ export default async function Image({ params }: { params: Promise<{ uid: string 
           </div>
         ) : (
           <div style={{ display: 'flex', fontSize: 32, fontWeight: 700, color: INK }}>
-            The 30-day courage challenge · brazen.click
+            Get comfortable with the uncomfortable · brazen.click
           </div>
         )}
       </div>

@@ -6,7 +6,7 @@ import ScrollPageBodyToggle from '@/components/ScrollBodyToggle';
 
 export const metadata: Metadata = {
   title: 'About — Brazen',
-  description: 'The friendliest way to build rejection muscle.',
+  description: 'The system for getting comfortable with the uncomfortable.',
 };
 
 const PERSONAS = [
@@ -34,10 +34,10 @@ const PERSONAS = [
 ];
 
 const STEPS = [
-  ['Ask for something.', 'Anything. Coffee, a raise, an intro, a discount. The muscle is the same.'],
+  ['Do the uncomfortable thing.', 'Ask for the raise, the date, the discount, the intro. The discomfort is the rep.'],
   ['Log it in 5 seconds.', 'Type the ask, tap No or Yes. We do the streak math.'],
-  ['Watch the number climb.', 'Daily streaks, milestones from 1 to 1,000, a leaderboard if you want company.'],
-  ['Mark the useful ones.', 'Some rejections come with feedback or new doors. Star those.'],
+  ['Build the streak.', 'Daily reps, milestones, a leaderboard if you want company. Consistency is the whole game.'],
+  ['Watch it get easier.', 'Reps compound. The asks that scared you start to feel normal.'],
 ];
 
 export default function AboutPage() {
@@ -56,14 +56,15 @@ export default function AboutPage() {
         </span>
 
         <h1 className="font-display mb-4" style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)' }}>
-          We made an app for getting told no.
+          A gym for getting comfortable with the uncomfortable.
         </h1>
         <p
           className="mb-10"
           style={{ fontSize: 18, lineHeight: 1.55, color: 'var(--pp-ink-2)' }}
         >
-          Most apps help you avoid uncomfortable things. This one is the opposite — it cheers
-          you on every time you do the hard ask. Big or small, you log it and we celebrate it.
+          Most apps help you avoid uncomfortable things. Brazen does the opposite — it gets you
+          to do one hard ask a day and cheers every rep, because that&rsquo;s how courage is
+          built: consistently.
         </p>
 
         <h2 className="font-display text-2xl mb-4">Built for chronic askers</h2>
@@ -119,14 +120,14 @@ export default function AboutPage() {
             Ready when you are.
           </h2>
           <p className="text-base mb-4" style={{ opacity: 0.85, lineHeight: 1.55 }}>
-            Free forever, no card needed. Your first rejection is out there waiting.
+            Free forever, no card. Your first uncomfortable ask is out there waiting.
           </p>
           <Link
             href="/app"
             className="pp-btn pp-btn-primary"
             style={{ padding: '12px 22px' }}
           >
-            Start collecting
+            Start free
             <ArrowRightIcon size={16} />
           </Link>
         </div>

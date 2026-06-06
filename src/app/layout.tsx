@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Brazen",
   description:
-    "The scoreboard for people who ask for things. Log your rejections, build a streak, stop flinching when the answer is no.",
+    "The system for getting comfortable with the uncomfortable. Do one brave ask a day, build the streak, and get what you want.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

@@ -15,10 +15,10 @@ const CARDS = [
   { ask: 'Asked Jess out for coffee',           result: 'Yes', rotate: 3,  top: 350, left: 60,  bg: 'var(--pp-card)' },
 ];
 
-const VS_NOTEBOOK = [
-  ['A notebook can’t do streak math.', 'This counts each day you showed up — and breaks if you skip.'],
-  ['A notebook lets you rewrite the story.', 'Logged in five seconds, before your brain edits what happened.'],
-  ['A notebook doesn’t level up.', 'You hit 1, then 10, then 100, then 1,000. Each one a moment.'],
+const HOW_STEPS = [
+  ['Do one brave ask a day.', 'A date, a discount, a raise, an intro. The discomfort is the rep.'],
+  ['Log it in five seconds.', 'Tap No or Yes before your brain rewrites what happened.'],
+  ['Build the streak.', 'Show up daily and the asks that scared you start to feel normal.'],
 ];
 
 export default function LandingPage() {
@@ -44,7 +44,7 @@ export default function LandingPage() {
             className="font-display mb-5"
             style={{ fontSize: 'clamp(2.25rem, 7vw, 4.75rem)', lineHeight: 1.05 }}
           >
-            The 30-day challenge to{' '}
+            Get comfortable with the{' '}
             <span
               className="inline-block"
               style={{
@@ -57,9 +57,9 @@ export default function LandingPage() {
                 border: '2px solid var(--pp-ink)',
               }}
             >
-              ask
-            </span>{' '}
-            for what you want.
+              uncomfortable
+            </span>
+            .
           </h1>
 
           <p
@@ -71,9 +71,9 @@ export default function LandingPage() {
               maxWidth: 540,
             }}
           >
-            Rejection is the toll for the things you want. Brazen turns it into a game —
-            daily missions, 100+ ready-to-send scripts, and a scoreboard where every no is a
-            point.
+            Everything you want is on the other side of it. Brazen gets you doing one brave
+            ask a day — logged, counted, and turned into a streak — because success is just
+            doing the hard things, consistently.
           </p>
 
           <div className="flex items-center gap-3.5 mb-7 flex-wrap">
@@ -82,7 +82,7 @@ export default function LandingPage() {
               className="pp-btn pp-btn-primary"
               style={{ padding: '14px 22px', fontSize: 15 }}
             >
-              Start collecting
+              Start free
               <ArrowRightIcon size={16} />
             </Link>
             <Link
@@ -180,14 +180,14 @@ export default function LandingPage() {
             className="font-display mb-2"
             style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
           >
-            Why not a notebook?
+            How it works
           </h2>
           <p className="mb-8" style={{ fontSize: 16, color: 'var(--pp-ink-2)' }}>
-            Because a notebook can&rsquo;t keep score.
+            Get comfortable with the uncomfortable, one ask at a time.
           </p>
 
           <div className="flex flex-col gap-3">
-            {VS_NOTEBOOK.map(([title, body], i) => (
+            {HOW_STEPS.map(([title, body], i) => (
               <div
                 key={i}
                 className="pp-card flex gap-4 items-start"
@@ -206,7 +206,7 @@ export default function LandingPage() {
                     fontSize: 16,
                   }}
                 >
-                  ✕
+                  {i + 1}
                 </span>
                 <div>
                   <div className="font-display text-lg mb-1">{title}</div>
@@ -236,13 +236,13 @@ export default function LandingPage() {
             className="font-display mb-3"
             style={{ fontSize: 'clamp(1.75rem, 4.5vw, 2.5rem)', lineHeight: 1.1 }}
           >
-            Your first rejection is out there.
+            Your first uncomfortable ask is out there.
           </h2>
           <p
             className="mb-7 mx-auto"
             style={{ fontSize: 17, lineHeight: 1.55, opacity: 0.92, maxWidth: 480 }}
           >
-            Sign up, log it, watch the count climb. Free to start, no card.
+            Sign up, do one hard ask today, log it. Free to start, no card.
           </p>
           <Link
             href="/app"
@@ -256,7 +256,7 @@ export default function LandingPage() {
               boxShadow: '0 3px 0 rgba(0,0,0,0.5)',
             }}
           >
-            Start collecting
+            Start free
             <ArrowRightIcon size={16} />
           </Link>
         </div>
