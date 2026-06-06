@@ -16,7 +16,7 @@ export default function PublicLeaderboard() {
       style={{ background: 'var(--pp-bg)' }}
     >
       <ScrollPageBodyToggle />
-      <div style={{ maxWidth: 720, margin: '0 auto' }}>
+      <div>
         <MarketingNav active="leaderboard" />
 
         <span className="pp-pill mb-4 inline-flex" style={{ background: 'var(--pp-sun-sf)' }}>
