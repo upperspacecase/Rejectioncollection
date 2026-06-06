@@ -12,6 +12,8 @@ export interface UserProfile {
   yearlyGoal: number;
   joinDate: number;
   foundingMemberNumber?: number;
+  lifeArea?: string;
+  completedMissions?: string[];
 }
 
 export interface AppState {

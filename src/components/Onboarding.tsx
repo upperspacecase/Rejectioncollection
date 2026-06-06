@@ -3,24 +3,19 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/lib/store';
+import { LIFE_AREAS, getFirstAsk } from '@/lib/askLibrary';
 import { ReceiptIcon, FlameIcon, TrophyIcon, ArrowRightIcon, CheckIcon } from './Icons';
 
-type OnboardingStep = 'intro' | 'name' | 'ready';
-
-const FIRST_ASK_IDEAS = [
-  'Ask for a discount',
-  'Cold-email your hero',
-  'Request the corner table',
-  'Ask for an intro',
-];
+type OnboardingStep = 'intro' | 'name' | 'area' | 'ready';
 
 export default function Onboarding() {
   const { completeOnboarding } = useStore();
   const [step, setStep] = useState<OnboardingStep>('intro');
   const [name, setName] = useState('');
+  const [area, setArea] = useState('');
 
   function handleComplete() {
-    completeOnboarding(name.trim() || 'Anonymous');
+    completeOnboarding(name.trim() || 'Anonymous', area || undefined);
   }
 
   const displayName = name.trim() || 'collector';
@@ -118,7 +113,7 @@ export default function Onboarding() {
               className="flex-1 flex flex-col pt-4"
             >
               <div className="flex items-center gap-2 mb-5">
-                {[1, 2, 3].map((n) => (
+                {[1, 2, 3, 4].map((n) => (
                   <span
                     key={n}
                     className="flex-1"
@@ -169,7 +164,7 @@ export default function Onboarding() {
               <div className="flex-1" />
 
               <button
-                onClick={() => setStep('ready')}
+                onClick={() => setStep('area')}
                 className="pp-btn pp-btn-primary w-full text-base"
                 style={{ padding: '14px 0' }}
               >
@@ -179,12 +174,86 @@ export default function Onboarding() {
               <button
                 onClick={() => {
                   setName('');
-                  setStep('ready');
+                  setStep('area');
                 }}
                 className="pp-btn pp-btn-ghost w-full mt-2 text-xs"
                 style={{ padding: '10px 0' }}
               >
                 Skip, I&rsquo;ll stay anonymous
+              </button>
+            </motion.div>
+          )}
+
+          {step === 'area' && (
+            <motion.div
+              key="area"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="flex-1 flex flex-col pt-4 overflow-y-auto"
+            >
+              <div className="flex items-center gap-2 mb-5">
+                {[1, 2, 3, 4].map((n) => (
+                  <span
+                    key={n}
+                    className="flex-1"
+                    style={{
+                      height: 6,
+                      borderRadius: 999,
+                      background: n <= 3 ? 'var(--pp-coral)' : 'var(--pp-coral-sf)',
+                      border: '1.5px solid var(--pp-ink)',
+                    }}
+                  />
+                ))}
+              </div>
+
+              <h2 className="font-display text-3xl mb-2">Where do you want to get braver?</h2>
+              <p className="text-sm mb-5" style={{ color: 'var(--pp-ink-2)' }}>
+                Pick one. We&rsquo;ll hand you your first ask on the next screen.
+              </p>
+
+              <div className="grid grid-cols-2 gap-2 mb-5">
+                {LIFE_AREAS.map((a) => {
+                  const selected = area === a.id;
+                  return (
+                    <button
+                      key={a.id}
+                      onClick={() => setArea(a.id)}
+                      className="cursor-pointer text-left font-semibold text-sm"
+                      style={{
+                        padding: '12px 14px',
+                        borderRadius: 12,
+                        border: '2px solid var(--pp-ink)',
+                        background: selected ? 'var(--pp-coral)' : 'var(--pp-card)',
+                        color: selected ? '#fff' : 'var(--pp-ink)',
+                        boxShadow: selected ? 'var(--pp-shadow)' : 'var(--pp-shadow-sm)',
+                      }}
+                    >
+                      {a.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                onClick={() => setStep('ready')}
+                disabled={!area}
+                className="pp-btn pp-btn-primary w-full text-base"
+                style={{ padding: '14px 0' }}
+              >
+                Next
+                <ArrowRightIcon size={16} />
+              </button>
+              <button
+                onClick={() => {
+                  setArea('');
+                  setStep('ready');
+                }}
+                className="pp-btn pp-btn-ghost w-full mt-2 text-xs"
+                style={{ padding: '10px 0' }}
+              >
+                Skip for now
               </button>
             </motion.div>
           )}
@@ -223,16 +292,12 @@ export default function Onboarding() {
               </div>
 
               <div className="pp-card mb-4" style={{ padding: 16, background: 'var(--pp-sun-sf)' }}>
-                <div className="text-xs font-bold mb-2" style={{ color: 'var(--pp-ink-2)' }}>
-                  FIRST-ASK IDEAS ↓
+                <div className="text-xs font-bold mb-1.5" style={{ color: 'var(--pp-ink-2)' }}>
+                  YOUR FIRST ASK TODAY ↓
                 </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {FIRST_ASK_IDEAS.map((t) => (
-                    <span key={t} className="pp-pill" style={{ background: 'var(--pp-card)' }}>
-                      {t}
-                    </span>
-                  ))}
-                </div>
+                <p className="font-display text-lg" style={{ lineHeight: 1.25 }}>
+                  {getFirstAsk(area)}
+                </p>
               </div>
 
               <button

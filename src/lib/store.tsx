@@ -30,6 +30,7 @@ const defaultProfile: UserProfile = {
   name: '',
   yearlyGoal: 1000,
   joinDate: Date.now(),
+  completedMissions: [],
 };
 
 const defaultState: AppState = {
@@ -42,10 +43,11 @@ type Action =
   | { type: 'LOG_ENTRY'; payload: Rejection }
   | { type: 'TOGGLE_USEFUL'; payload: string }
   | { type: 'DELETE_ENTRY'; payload: string }
-  | { type: 'COMPLETE_ONBOARDING'; payload: { name: string } }
+  | { type: 'COMPLETE_ONBOARDING'; payload: { name: string; lifeArea?: string } }
   | { type: 'UPDATE_GOAL'; payload: number }
   | { type: 'UPDATE_NAME'; payload: string }
   | { type: 'SET_FOUNDING_NUMBER'; payload: number }
+  | { type: 'TOGGLE_MISSION'; payload: string }
   | { type: 'SYNC_ENTRIES'; payload: Rejection[] };
 
 function reducer(state: AppState, action: Action): AppState {
@@ -77,6 +79,7 @@ function reducer(state: AppState, action: Action): AppState {
           ...state.profile,
           onboardingComplete: true,
           name: action.payload.name,
+          lifeArea: action.payload.lifeArea,
           joinDate: Date.now(),
         },
       };
@@ -99,6 +102,14 @@ function reducer(state: AppState, action: Action): AppState {
         profile: { ...state.profile, foundingMemberNumber: action.payload },
       };
 
+    case 'TOGGLE_MISSION': {
+      const current = state.profile.completedMissions ?? [];
+      const completedMissions = current.includes(action.payload)
+        ? current.filter((id) => id !== action.payload)
+        : [...current, action.payload];
+      return { ...state, profile: { ...state.profile, completedMissions } };
+    }
+
     case 'SYNC_ENTRIES':
       return {
         ...state,
@@ -116,8 +127,9 @@ interface StoreContextValue {
   logEntry: (entry: { ask: string; isYes: boolean }) => void;
   toggleUseful: (id: string) => void;
   deleteEntry: (id: string) => void;
-  completeOnboarding: (name: string) => void;
+  completeOnboarding: (name: string, lifeArea?: string) => void;
   updateName: (name: string) => void;
+  toggleMission: (id: string) => void;
   isLoaded: boolean;
 }
 
@@ -279,16 +291,18 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   );
 
   const completeOnboarding = useCallback(
-    (name: string) => {
-      dispatch({ type: 'COMPLETE_ONBOARDING', payload: { name } });
+    (name: string, lifeArea?: string) => {
+      dispatch({ type: 'COMPLETE_ONBOARDING', payload: { name, lifeArea } });
 
       if (user) {
         const userDocRef = doc(db, 'users', user.uid);
         setDoc(userDocRef, {
           onboardingComplete: true,
           name,
+          lifeArea: lifeArea ?? null,
           yearlyGoal: 1000,
           joinDate: Date.now(),
+          completedMissions: [],
         })
           .then(() => claimFoundingMemberIfEligible(user.uid, undefined))
           .then((claimed) => {
@@ -298,6 +312,22 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       }
     },
     [user]
+  );
+
+  const toggleMission = useCallback(
+    (id: string) => {
+      dispatch({ type: 'TOGGLE_MISSION', payload: id });
+
+      if (user) {
+        const current = state.profile.completedMissions ?? [];
+        const completedMissions = current.includes(id)
+          ? current.filter((m) => m !== id)
+          : [...current, id];
+        const userDocRef = doc(db, 'users', user.uid);
+        setDoc(userDocRef, { completedMissions }, { merge: true }).catch(() => {});
+      }
+    },
+    [user, state.profile.completedMissions]
   );
 
   const updateName = useCallback(
@@ -323,6 +353,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         deleteEntry,
         completeOnboarding,
         updateName,
+        toggleMission,
         isLoaded,
       }}
     >

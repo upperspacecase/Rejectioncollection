@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/lib/store';
 import {
   getRejections,
@@ -12,13 +12,21 @@ import {
 } from '@/lib/utils';
 import { MILESTONES } from '@/lib/milestones';
 import { getAskOfTheDay, getDayName, getGreetingPeriod } from '@/lib/asks';
+import { TOTAL_MISSIONS, getCurrentWeek } from '@/lib/challenge';
 import { Rejection } from '@/lib/types';
-import { FlameIcon, StarIcon, CheckIcon } from './Icons';
+import { FlameIcon, StarIcon, CheckIcon, SparkleIcon } from './Icons';
 import LastThirtyDaysStrip from './LastThirtyDaysStrip';
+import AskLibrary from './AskLibrary';
+import ChallengeView from './ChallengeView';
 
 export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
   const { state } = useStore();
   const { entries, profile } = state;
+  const [showLibrary, setShowLibrary] = useState(false);
+  const [showChallenge, setShowChallenge] = useState(false);
+
+  const missionsDone = (profile.completedMissions ?? []).length;
+  const currentWeek = getCurrentWeek(profile.joinDate);
 
   const rejections = getRejections(entries).length;
   const yeses = getYeses(entries).length;
@@ -157,6 +165,36 @@ export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
         )}
       </div>
 
+      {/* Challenge + Ask Library launchers */}
+      <div className="grid grid-cols-2 gap-2 mb-3">
+        <button
+          onClick={() => setShowChallenge(true)}
+          className="pp-card pp-card-sm cursor-pointer text-left flex flex-col"
+          style={{ padding: 14, background: 'var(--pp-sun-sf)' }}
+        >
+          <div className="flex items-center gap-2 mb-1.5">
+            <FlameIcon size={18} style={{ color: 'var(--pp-coral)' }} />
+            <span className="font-display text-sm">Challenge</span>
+          </div>
+          <span className="text-xs" style={{ color: 'var(--pp-ink-2)' }}>
+            {missionsDone}/{TOTAL_MISSIONS} missions · Week {currentWeek}
+          </span>
+        </button>
+        <button
+          onClick={() => setShowLibrary(true)}
+          className="pp-card pp-card-sm cursor-pointer text-left flex flex-col"
+          style={{ padding: 14, background: 'var(--pp-mint-sf)' }}
+        >
+          <div className="flex items-center gap-2 mb-1.5">
+            <SparkleIcon size={18} />
+            <span className="font-display text-sm">Ask Library</span>
+          </div>
+          <span className="text-xs" style={{ color: 'var(--pp-ink-2)' }}>
+            100+ scripts to copy
+          </span>
+        </button>
+      </div>
+
       {/* Last 30 days activity */}
       <div className="mb-3">
         <LastThirtyDaysStrip />
@@ -252,6 +290,19 @@ export default function HomeTab({ onSeeAll }: { onSeeAll: () => void }) {
           </div>
         )}
       </div>
+
+      <AnimatePresence>
+        {showLibrary && (
+          <AskLibrary
+            key="lib"
+            initialCategory={profile.lifeArea}
+            onClose={() => setShowLibrary(false)}
+          />
+        )}
+        {showChallenge && (
+          <ChallengeView key="chal" onClose={() => setShowChallenge(false)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
