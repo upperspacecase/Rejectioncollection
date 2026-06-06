@@ -44,7 +44,7 @@ export default function LandingPage() {
             className="font-display mb-5"
             style={{ fontSize: 'clamp(2.25rem, 7vw, 4.75rem)', lineHeight: 1.05 }}
           >
-            Ask for the{' '}
+            The 30-day challenge to{' '}
             <span
               className="inline-block"
               style={{
@@ -57,9 +57,9 @@ export default function LandingPage() {
                 border: '2px solid var(--pp-ink)',
               }}
             >
-              thing
-            </span>
-            .
+              ask
+            </span>{' '}
+            for what you want.
           </h1>
 
           <p
@@ -71,9 +71,9 @@ export default function LandingPage() {
               maxWidth: 540,
             }}
           >
-            Build the courage to ask for dates, deals, raises, intros, discounts, and
-            opportunities — one brave ask at a time. Brazen is the scoreboard and community
-            to keep you on track.
+            Rejection is the toll for the things you want. Brazen turns it into a game —
+            daily missions, 100+ ready-to-send scripts, and a scoreboard where every no is a
+            point.
           </p>
 
           <div className="flex items-center gap-3.5 mb-7 flex-wrap">
