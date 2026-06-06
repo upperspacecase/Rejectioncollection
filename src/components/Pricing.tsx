@@ -5,19 +5,21 @@ import { ArrowRightIcon, CheckIcon } from './Icons';
 import FoundingCounter from './FoundingCounter';
 
 const CORE = [
-  'Unlimited rejection logs',
-  'Streaks and yearly goal',
-  'Leaderboard',
+  'Unlimited ask & rejection logs',
+  'Streaks, daily slots & yearly goal',
+  'Public leaderboard',
   '52-week contribution heatmap',
 ];
 
-const FOUNDING = [
-  'Weekly digest email',
-  'Year-in-review card',
-  'Public profile page',
-  'Phrase templates for raises, intros, refunds, cold emails, and follow-ups',
-  'Founding-member badge + access to the founding group chat',
-  'Free for life — even after the paid pricing kicks in',
+const CLUB = [
+  'Guided 30-Day Courage Challenge',
+  'The Ask Library — 100+ soft & bold scripts',
+  'Weekly missions that tell you what to ask',
+  'Rejection reframes after every no',
+  'Public leaderboard (private circles coming soon)',
+  'AI ask coach (coming soon)',
+  'Accountability group (coming soon)',
+  'Weekly “bravest ask” digest (coming soon)',
 ];
 
 interface Props {
@@ -43,7 +45,7 @@ export default function Pricing({ variant = 'section' }: Props) {
           className="font-display mb-3"
           style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
         >
-          Two ways to start.
+          The 30-day courage challenge that helps you get the things you want.
         </h2>
         <p
           className="mb-10"
@@ -54,8 +56,8 @@ export default function Pricing({ variant = 'section' }: Props) {
             maxWidth: 620,
           }}
         >
-          Fear of rejection shrinks from a wall to a speed bump. You hear &ldquo;no&rdquo; and
-          feel mildly amused, not crushed. Pick the lane that fits.
+          Brazen isn&rsquo;t a tracker you check. It&rsquo;s a program that tells you what to ask,
+          hands you the words, and keeps score while you build the nerve. Start free.
         </p>
 
         <div
@@ -79,7 +81,7 @@ export default function Pricing({ variant = 'section' }: Props) {
 
           {/* FOUNDING MEMBER (formerly two tiers — merged) */}
           <Card
-            title="Founding Member"
+            title="Brazen Club"
             price="Free"
             priceSub={
               <div className="flex flex-col gap-1.5">
@@ -89,8 +91,8 @@ export default function Pricing({ variant = 'section' }: Props) {
                 </span>
               </div>
             }
-            body="The first 50 people to sign up get the paid tier free for life and join the founding group — a small chat where we decide what to build next based on what you ask for."
-            features={FOUNDING}
+            body="The full courage program. The first 50 people to join get the Club free for life and shape what we build next based on what you ask for."
+            features={CLUB}
             cta="Claim your founding spot"
             ctaHref="/"
             highlighted
@@ -106,10 +108,9 @@ export default function Pricing({ variant = 'section' }: Props) {
         <div className="pp-tip mt-8">
           <span className="pp-tip-icon">!</span>
           <div>
-            <b>Why 50:</b> small enough to actually listen to. Founders shape what gets built —
-            digest, year-in-review, public profile, phrase templates — in the order you ask for
-            them. After the 50 are seated, the paid tier launches at $5/mo or $35/year. Founders
-            stay free for life.
+            <b>Why 50:</b> small enough to actually listen to. Founders get the whole Club free for
+            life and decide what we build next — AI coach, private circles, the digest — in the
+            order you ask for them. After the 50 are seated, the Club launches at $5/mo or $35/year.
           </div>
         </div>
       </div>
